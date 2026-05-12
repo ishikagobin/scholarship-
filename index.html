@@ -8,7 +8,7 @@
   <!-- ── FONTS ─────────────────────────────────────────────── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
   /* ════════════════════════════════════════════════════════════
@@ -47,8 +47,8 @@
     --gray-light:   #B0A898;
 
     /* Typography */
-    --font-display: 'Playfair Display', Georgia, serif;
-    --font-body:    'Inter', sans-serif;
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body:    'Outfit', sans-serif;
     --font-mono:    'DM Mono', 'Courier New', monospace;
 
     /* Spacing */
@@ -540,7 +540,7 @@
   /* Eleanor snapshot card */
   .snapshot-card {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: 1px;
     background: var(--border);
     border: 1px solid var(--border);
@@ -1184,14 +1184,108 @@
 <!-- ═══════════════════════════════════════════════════════════
      SECTION 1 — THE DREAM ONCE WORKED
 ════════════════════════════════════════════════════════════ -->
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — THE DREAM ONCE WORKED
+════════════════════════════════════════════════════════════ -->
 <section id="s1" class="section" aria-labelledby="s1-heading">
   <div class="container">
 
-    <div class="section-header reveal">
-      <span class="eyebrow eyebrow--muted">1953–1973</span>
-      <h2 id="s1-heading">The dream once worked</h2>
-      <p>The American Dream was never equally available to everyone. But for a broad middle class, income growth, housing affordability, and family formation were more aligned than at any point since.</p>
-    </div>
+   <div class="section-header reveal">
+  <h2 id="s1-heading">Disclaimer</h2>
+  <p>The shaded areas in the following plots represent periods of economic recession as defined by the National Bureau of Economic Research (NBER). A recession is described as the official period where the U.S. economy has contracted: GDP shrinks and unemployment typically rises. Each shaded band starts at the month the recession began and ends when it officially concluded</p>
+  <ul style="margin-top: 0.75rem; padding-left: 1.5rem; line-height: 1.9; color: var(--text-muted);">
+    <li><strong>Early 1960's:</strong> Post-Korean War slowdown</li>
+    <li><strong>Early 1970's:</strong> Oil shock — OPEC embargo sent energy prices soaring</li>
+    <li><strong>Early 1980s:</strong> Federal Reserve aggressively raised interest rates to 20% to kill inflation so mortgage rates hit an all time high</li>
+    <li><strong>Early 1990s:</strong> Gulf war & Savings and Loan crisis</li>
+    <li><strong>Early 2000s:</strong> Dot com bust & 9-11 tragedy</li>
+    <li><strong>2007–2009:</strong> Great Recession: housing market collapse triggered a global financial crisis</li>
+    <li><strong>Post 2020's:</strong> COVID-19 pandemic</li>
+  </ul>
+</div>
+
+<div class="section-header reveal" id="dream-header">
+  <span class="eyebrow eyebrow--muted" id="dream-eyebrow"></span>
+  <h2 id="dream-heading"></h2>
+  <p>The American Dream was never equally available to everyone. But for a broad middle class, their income growth, housing affordability and family formation were aligned at a time. Looking at Eleanor's household in 1965, we can see how these factors came together. The 3x income rule of Economists state that a home's purchase price should not exceed three times your annual gross household income to avoid financial strain. We can see that her family only paid 3.4x of their income for their home which is even better considering they were living off of her husband's income solely. Note, she is a stay-at-home mom so the cost of childcare wasn't a burden. </p>
+</div>
+
+<script>
+(function () {
+  const header    = document.getElementById('dream-header');
+  const eyebrowEl = document.getElementById('dream-eyebrow');
+  const headingEl = document.getElementById('dream-heading');
+
+  const eyebrowText = "1950's–1970's";
+  const headingText = "The dream once worked";
+
+  let started = false;
+
+  function trickleWords(el, text, delay, onDone) {
+    const words = text.split(' ');
+    let i = 0;
+    function next() {
+      if (i >= words.length) { if (onDone) onDone(); return; }
+      el.textContent += (i === 0 ? '' : ' ') + words[i];
+      i++;
+      setTimeout(next, delay);
+    }
+    next();
+  }
+
+  function typeLetters(el, text, delay) {
+    let i = 0;
+    let erasing = false;
+    let pausing = false;
+    let displayed = '';
+    el.innerHTML = '<span class="cursor">|</span>';
+    const cursor = el.querySelector('.cursor');
+
+    // Insert an empty text node before the cursor to write into
+    const textNode = document.createTextNode('');
+    el.insertBefore(textNode, cursor);
+
+    setInterval(() => {
+      if (pausing) return;
+
+      if (!erasing) {
+        if (i < text.length) {
+          displayed += text[i];
+          i++;
+          textNode.textContent = displayed;
+        } else {
+          pausing = true;
+          setTimeout(() => { erasing = true; pausing = false; }, 1500);
+        }
+      } else {
+        if (displayed.length > 0) {
+          displayed = displayed.slice(0, -1);
+          textNode.textContent = displayed;
+        } else {
+          i = 0;
+          erasing = false;
+          pausing = true;
+          setTimeout(() => { pausing = false; }, 500);
+        }
+      }
+    }, delay);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        trickleWords(eyebrowEl, eyebrowText, 120, () => {
+          setTimeout(() => typeLetters(headingEl, headingText, 60), 300);
+        });
+        observer.unobserve(header);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(header);
+})();
+</script>
 
     <!-- Eleanor snapshot — 1965 -->
     <div class="reveal">
@@ -1206,16 +1300,6 @@
           <span class="snapshot-label">Home price ÷ income</span>
           <span class="snapshot-value">3.4×</span>
           <span class="snapshot-note">Years of income to buy median home</span>
-        </div>
-        <div class="snapshot-cell">
-          <span class="snapshot-label">Fertility rate</span>
-          <span class="snapshot-value">2.9</span>
-          <span class="snapshot-note">Above 2.1 replacement level</span>
-        </div>
-        <div class="snapshot-cell">
-          <span class="snapshot-label">Family cost burden</span>
-          <span class="snapshot-value">~15%</span>
-          <span class="snapshot-note">Cost of child as % of income/yr</span>
         </div>
       </div>
       <p class="snapshot-caption">All nominal values in this visualization were adjusted to 2023 dollars using CPIAUCSL. 2023 was selected as the base year as it represents the most recent year for which all primary datasets (income, wages, housing) have complete annual observations.</p>
@@ -1244,13 +1328,56 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 
     <!-- Chart 2: Housing affordability -->
     <div class="chart-block reveal">
-      <div class="chart-title">A Home Cost 3× Your Income, Not 5×</div>
-      <div class="chart-subtitle">A home used to cost 3 years of your income. Now it costs 5.</div>
+      <div class="chart-title" id="housing-title" style="font-size: 2rem;"></div>
       <div class="chart-frame">
         <iframe src="outputs/act1/act1_fig4_housing.html" height="560" title="Housing affordability chart"></iframe>
       </div>
       <p class="chart-source">Source: FRED · MSPUS (median home price) · MEFAINUSA672N (income, deflated to nominal)</p>
     </div>
+
+    <script>
+(function () {
+  const el = document.getElementById('housing-title');
+  const text = "A Home Should Cost 3× Your Income, Not 5×";
+  let i = 0, erasing = false, pausing = false, displayed = '';
+  el.innerHTML = '<span class="cursor">|</span>';
+  const cursor = el.querySelector('.cursor');
+  const textNode = document.createTextNode('');
+  el.insertBefore(textNode, cursor);
+
+  let started = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        setInterval(() => {
+          if (pausing) return;
+          if (!erasing) {
+            if (i < text.length) {
+              displayed += text[i++];
+              textNode.textContent = displayed;
+            } else {
+              pausing = true;
+              setTimeout(() => { erasing = true; pausing = false; }, 1500);
+            }
+          } else {
+            if (displayed.length > 0) {
+              displayed = displayed.slice(0, -1);
+              textNode.textContent = displayed;
+            } else {
+              i = 0; erasing = false; pausing = true;
+              setTimeout(() => { pausing = false; }, 500);
+            }
+          }
+        }, 60);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(el);
+})();
+</script>
 
         <!-- Causal note -->
     <div class="causal-note reveal">
@@ -1262,18 +1389,61 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
   </div>
 </section>
 
-
 <!-- ═══════════════════════════════════════════════════════════
      SECTION 2 — THE TWO INFLATIONS
 ════════════════════════════════════════════════════════════ -->
 <section id="s2" class="section" aria-labelledby="s2-heading">
   <div class="container">
 
-    <div class="section-header reveal">
+    <div class="section-header reveal" id="split-header" style="font-size: 2rem;"></div>
       <span class="eyebrow eyebrow--muted">Section 02 · 1967–2025</span>
-      <h2 id="s2-heading">The economy split in two</h2>
+      <h2 id="split-heading" style="font-family: var(--font-body); font-weight: 600;"></h2>
       <p>America became dramatically cheaper for things you buy <em>after</em> the dream — TVs, clothes, consumer goods. But it became far more expensive for the things you need to <em>start</em> the dream: housing, healthcare, childcare, education.</p>
     </div>
+
+    <script>
+(function () {
+  const el = document.getElementById('split-heading');
+  const text = "The economy split in two";
+  let i = 0, erasing = false, pausing = false, displayed = '';
+  el.innerHTML = '<span class="cursor">|</span>';
+  const cursor = el.querySelector('.cursor');
+  const textNode = document.createTextNode('');
+  el.insertBefore(textNode, cursor);
+
+  let started = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        setInterval(() => {
+          if (pausing) return;
+          if (!erasing) {
+            if (i < text.length) {
+              displayed += text[i++];
+              textNode.textContent = displayed;
+            } else {
+              pausing = true;
+              setTimeout(() => { erasing = true; pausing = false; }, 1500);
+            }
+          } else {
+            if (displayed.length > 0) {
+              displayed = displayed.slice(0, -1);
+              textNode.textContent = displayed;
+            } else {
+              i = 0; erasing = false; pausing = true;
+              setTimeout(() => { pausing = false; }, 500);
+            }
+          }
+        }, 60);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(el);
+})();
+</script>
 
     <!-- Hero chart — full width -->
     <div class="chart-block reveal">
@@ -1318,25 +1488,92 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 <section id="s3" class="section section--dark" aria-labelledby="s3-heading">
   <div class="container">
 
-    <div class="section-header section-header--light reveal">
-      <span class="eyebrow">Section 03 · 1979–2023</span>
-      <h2 id="s3-heading">The economy kept growing.<br>Not everyone kept up.</h2>
-      <p class="lead lead--light">The gains from economic growth since 1979 have been deeply unequal. Tiffany's paycheck did not grow the way Angela's did — and neither of them grew the way the top 0.1% did.</p>
-    </div>
+<div class="section-header section-header--light reveal" id="growth-header">
+  <span class="eyebrow">Section 03 · 1979–2023</span>
+  <h2 id="growth-heading"></h2>
+  <p class="lead lead--light">The gains from economic growth since 1979 have been deeply unequal. Tiffany's paycheck did not grow the way Angela's did — and neither of them grew the way the top 0.1% did.</p>
+</div>
+
+<script>
+(function () {
+  const el = document.getElementById('growth-heading');
+  const lines = ["The economy kept growing.", "Not everyone kept up."];
+  let lineIndex = 0, charIndex = 0, erasing = false, pausing = false;
+  let displayed = ['', ''];
+
+  el.innerHTML = '<span class="cursor">|</span>';
+  const cursor = el.querySelector('.cursor');
+
+  function render() {
+    // Build content: line1 + <br> (if line2 has started) + line2 + cursor
+    let html = displayed[0];
+    if (displayed[1].length > 0 || (lineIndex === 1)) {
+      html += '<br>' + displayed[1];
+    }
+    el.innerHTML = html + '<span class="cursor">|</span>';
+  }
+
+  let started = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+
+        setInterval(() => {
+          if (pausing) return;
+
+          if (!erasing) {
+            const currentLine = lines[lineIndex];
+            if (charIndex < currentLine.length) {
+              displayed[lineIndex] += currentLine[charIndex++];
+              render();
+            } else if (lineIndex < lines.length - 1) {
+              // Move to next line
+              lineIndex++;
+              charIndex = 0;
+            } else {
+              // Done typing all lines
+              pausing = true;
+              setTimeout(() => { erasing = true; pausing = false; }, 1500);
+            }
+          } else {
+            // Erase from last line backwards
+            if (displayed[1].length > 0) {
+              displayed[1] = displayed[1].slice(0, -1);
+              render();
+            } else if (displayed[0].length > 0) {
+              displayed[0] = displayed[0].slice(0, -1);
+              render();
+            } else {
+              // Reset
+              lineIndex = 0; charIndex = 0;
+              erasing = false; pausing = true;
+              setTimeout(() => { pausing = false; }, 500);
+            }
+          }
+        }, 60);
+
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(el);
+})();
+</script>
 
     <div class="pull-quote reveal">
-      <p>"The top 1% saw wages rise 182% since 1979. The bottom 90% saw 44% — over 44 years, that is less than 1% per year."</p>
-      <cite>Economic Policy Institute analysis of Social Security Administration wage data</cite>
+      <p>"Top 1% wages have skyrocketed 182% since 1979 while bottom 90% wages have seen just 44% growth, that is less than 1% per year."</p>
+      <cite>Economic Policy Institute analysis of Social Security Administration wage data, 2024</cite>
     </div>
 
     <!-- Chart: Wage growth indexed -->
     <div class="chart-block reveal">
-      <div class="chart-title">The Paycheck Lottery Since 1979</div>
-      <div class="chart-subtitle">Real annual wages indexed to 100 in 1979 · All groups start at the same point · Click legend to isolate</div>
+      <div class="chart-subtitle">Real annual wages indexed to 100 in 1979 as that is the year the dataset had data for·</div>
       <div class="chart-frame" style="border-color:var(--border-dark)">
         <iframe src="outputs/act2/act2_fig2_9010_gap.html" height="520" title="Wage growth chart"></iframe>
       </div>
-      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: Economic Policy Institute analysis of SSA data · epi_annual_wages.csv · Real 2023 dollars</p>
+      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: Economic Policy Institute analysis of SSA data</p>
     </div>
 
     <!-- Chart: Growth scorecard -->
@@ -1346,7 +1583,7 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
       <div class="chart-frame" style="border-color:var(--border-dark)">
         <iframe src="outputs/act2/act2_fig5_growth_scorecard.html" height="480" title="Growth scorecard chart"></iframe>
       </div>
-      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: EPI · epi_annual_wages.csv · 1979–2023</p>
+      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: Economic Policy Institute analysis of SSA data</p>
     </div>
 
   </div>
@@ -1358,12 +1595,55 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 ════════════════════════════════════════════════════════════ -->
 <section id="s4" class="section" aria-labelledby="s4-heading">
   <div class="container">
-
-    <div class="section-header reveal">
+    <div class="section-header reveal" id="s4-header">
       <span class="eyebrow eyebrow--muted">Section 04 · The human cost</span>
-      <h2 id="s4-heading">What it costs to start a family</h2>
+      <h2 id="s4-heading"></h2>
       <p>The abstract becomes personal when you follow the actual costs — from the delivery room to the first day of college. For Tiffany and Destiny, the goal is the same. The math is not.</p>
     </div>
+
+<script>
+(function () {
+  const el = document.getElementById('s4-heading');
+  const text = "What it costs to start a family";
+  let i = 0, erasing = false, pausing = false, displayed = '';
+  el.innerHTML = '<span class="cursor">|</span>';
+  const cursor = el.querySelector('.cursor');
+  const textNode = document.createTextNode('');
+  el.insertBefore(textNode, cursor);
+
+  let started = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        setInterval(() => {
+          if (pausing) return;
+          if (!erasing) {
+            if (i < text.length) {
+              displayed += text[i++];
+              textNode.textContent = displayed;
+            } else {
+              pausing = true;
+              setTimeout(() => { erasing = true; pausing = false; }, 1500);
+            }
+          } else {
+            if (displayed.length > 0) {
+              displayed = displayed.slice(0, -1);
+              textNode.textContent = displayed;
+            } else {
+              i = 0; erasing = false; pausing = true;
+              setTimeout(() => { pausing = false; }, 500);
+            }
+          }
+        }, 60);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(el);
+})();
+</script>
 
     <!-- Tiffany vs Angela comparison panel -->
     <div class="chart-block reveal">
@@ -1458,12 +1738,55 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 ════════════════════════════════════════════════════════════ -->
 <section id="s6" class="section" aria-labelledby="s6-heading">
   <div class="container">
-
-    <div class="section-header reveal">
-      <span class="eyebrow eyebrow--muted">Section 06 · The data behind the headlines</span>
-      <h2 id="s6-heading">The fertility squeeze</h2>
+    <div class="section-header reveal" id="s6-header">
+      <span class="eyebrow eyebrow--muted">Section 06</span>
+      <h2 id="s6-heading"></h2>
       <p>Fertility decline has many causes — cultural, medical, social. But the economic environment shapes when and whether people form families. The data shows a consistent relationship between rising housing costs and falling birth rates.</p>
     </div>
+
+<script>
+(function () {
+  const el = document.getElementById('s6-heading');
+  const text = "The fertility squeeze";
+  let i = 0, erasing = false, pausing = false, displayed = '';
+  el.innerHTML = '<span class="cursor">|</span>';
+  const cursor = el.querySelector('.cursor');
+  const textNode = document.createTextNode('');
+  el.insertBefore(textNode, cursor);
+
+  let started = false;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !started) {
+        started = true;
+        setInterval(() => {
+          if (pausing) return;
+          if (!erasing) {
+            if (i < text.length) {
+              displayed += text[i++];
+              textNode.textContent = displayed;
+            } else {
+              pausing = true;
+              setTimeout(() => { erasing = true; pausing = false; }, 1500);
+            }
+          } else {
+            if (displayed.length > 0) {
+              displayed = displayed.slice(0, -1);
+              textNode.textContent = displayed;
+            } else {
+              i = 0; erasing = false; pausing = true;
+              setTimeout(() => { pausing = false; }, 500);
+            }
+          }
+        }, 60);
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  observer.observe(el);
+})();
+</script>
 
     <!-- TFR stat highlight -->
     <div class="reveal">
@@ -1473,6 +1796,9 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
         <span class="stat-highlight-note">Record low · Well below 2.1 replacement level</span>
       </div>
     </div>
+
+
+    <p>According to the National Library of Medicine, the 2.1 replacement level fertility is the level of fertility at which a population exactly replaces itself from one generation to the next. In developed countries such as the United States,replacement level fertility can be taken as requiring an average of 2.1 children per woman.</p>
 
     <!-- Chart: Housing-Fertility Nexus -->
     <div class="chart-block reveal">
