@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cost of a Child in America, 1960 – 2024</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 18px; scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #F5F0E8;
+  color: #0F0E0B;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── TYPE SCALE ───────────────────────────────────────────── */
+.display {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.serif      { font-family: 'Playfair Display', Georgia, serif; }
+.mono       { font-family: 'DM Mono', monospace; }
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #7A7468;
+}
+
+/* ── LAYOUT ───────────────────────────────────────────────── */
+.container  { max-width: 900px; margin: 0 auto; padding: 0 2rem; }
+.container--wide { max-width: 1100px; margin: 0 auto; padding: 0 2rem; }
+.container--narrow { max-width: 680px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── OPENER ───────────────────────────────────────────────── */
+#opener {
+  min-height: 100vh;
+  background: #0F0E0B;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  padding: 0;
+}
+.opener-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6rem 2rem 4rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+.opener-kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #C8872A;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.opener-kicker::before {
+  content: '';
+  display: block;
+  width: 2.5rem;
+  height: 1px;
+  background: #C8872A;
+}
+.opener-h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: #F5F0E8;
+  margin-bottom: 2rem;
+}
+.opener-h1 em {
+  font-style: italic;
+  color: #C8872A;
+}
+.opener-deck {
+  font-size: 1.1rem;
+  color: rgba(245,240,232,0.55);
+  max-width: 52ch;
+  line-height: 1.65;
+  margin-bottom: 4rem;
+  font-weight: 300;
+}
+/* Big number row */
+.opener-numbers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border-top: 1px solid rgba(245,240,232,0.1);
+  padding-top: 2.5rem;
+}
+.opener-stat {
+  padding-right: 2rem;
+}
+.opener-stat + .opener-stat {
+  border-left: 1px solid rgba(245,240,232,0.08);
+  padding-left: 2rem;
+}
+.opener-stat-num {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 900;
+  color: #C8872A;
+  line-height: 1;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+.opener-stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.3);
+  line-height: 1.4;
+}
+/* Scroll cue */
+.opener-scroll {
+  padding: 1.5rem 2rem;
+  border-top: 1px solid rgba(245,240,232,0.08);
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+.opener-scroll-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.2);
+}
+
+/* ── SECTION HEADING ──────────────────────────────────────── */
+.section-break {
+  padding: 5rem 0 0;
+}
+.section-break--bottom {
+  padding: 5rem 0 5rem;
+}
+.section-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7A7468;
+  margin-bottom: 0.75rem;
+}
+.section-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  margin-bottom: 1rem;
+}
+.section-intro {
+  font-size: 1rem;
+  color: #7A7468;
+  max-width: 58ch;
+  line-height: 1.7;
+}
+
+/* ── STAGE ROWS ───────────────────────────────────────────── */
+.stages {
+  padding: 2rem 0 5rem;
+}
+
+.stage {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 0 3rem;
+  padding: 4rem 0;
+  border-top: 1px solid #D0C9BC;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  position: relative;
+}
+.stage.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Left gutter: age label + emoji */
+.stage-gutter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 0.2rem;
+  gap: 0.75rem;
+}
+.stage-emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+.stage-age {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #B0A898;
+  text-align: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Stage body */
+.stage-body {}
+.stage-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 1.75rem;
+  color: #0F0E0B;
+}
+
+/* Side-by-side cost columns */
+.cost-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+}
+.cost-col {
+  padding: 1.5rem 2rem;
+  background: #fff;
+}
+.cost-col + .cost-col {
+  border-left: 2px solid #F5F0E8;
+}
+.cost-col--1960 { border-top: 3px solid #2A6FAF; }
+.cost-col--2024 { border-top: 3px solid #B84A2E; }
+
+.cost-year {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+.cost-year--1960 { color: #2A6FAF; }
+.cost-year--2024 { color: #B84A2E; }
+
+.cost-figure {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.fig--1960 { color: #2A6FAF; }
+.fig--2024 { color: #B84A2E; }
+
+.cost-desc {
+  font-size: 0.82rem;
+  color: #7A7468;
+  line-height: 1.55;
+  margin-bottom: 0.5rem;
+}
+.cost-nominal {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  color: #B0A898;
+  margin-top: 0.5rem;
+}
+
+/* Multiple pill */
+.mult {
+  display: inline-block;
+  margin-top: 0.75rem;
+  background: #F5F0E8;
+  border: 1px solid #D0C9BC;
+  padding: 2px 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: #B84A2E;
+}
+
+/* ── TOTAL SECTION ────────────────────────────────────────── */
+#total {
+  background: #0F0E0B;
+  padding: 6rem 0;
+}
+.total-kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #C8872A;
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.total-kicker::before {
+  content: '';
+  width: 2rem;
+  height: 1px;
+  background: #C8872A;
+  display: block;
+}
+.total-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  color: #F5F0E8;
+  margin-bottom: 3.5rem;
+}
+.total-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: rgba(245,240,232,0.06);
+  margin-bottom: 4rem;
+}
+.total-card {
+  background: #1A1917;
+  padding: 2.5rem 2rem;
+}
+.total-card-year {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+.tc-yr-60 { color: #5B9BD5; }
+.tc-yr-24 { color: #D4714F; }
+.total-card-amount {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.6rem;
+}
+.tca-60 { color: #5B9BD5; }
+.tca-24 { color: #D4714F; }
+.total-card-sub {
+  font-size: 0.8rem;
+  color: rgba(245,240,232,0.35);
+  line-height: 1.5;
+}
+
+/* Income share bars */
+.share-section { margin-top: 0; }
+.share-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245,240,232,0.25);
+  margin-bottom: 1.5rem;
+}
+.share-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 50px;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.875rem;
+}
+.share-yr {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  text-align: right;
+  color: rgba(245,240,232,0.4);
+}
+.share-track {
+  height: 12px;
+  background: rgba(255,255,255,0.05);
+  position: relative;
+}
+.share-fill {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sf-60 { background: #2A6FAF; }
+.sf-24 { background: #B84A2E; }
+.share-pct {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+.sp-60 { color: #5B9BD5; }
+.sp-24 { color: #D4714F; }
+
+/* ── FINDINGS ─────────────────────────────────────────────── */
+#findings {
+  padding: 6rem 0;
+  border-top: 1px solid #D0C9BC;
+}
+.findings-header {
+  margin-bottom: 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #D0C9BC;
+}
+.findings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem 4rem;
+}
+.finding {}
+.finding-n {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 4rem;
+  font-weight: 900;
+  color: #E0D9CE;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.04em;
+}
+.finding-h {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-bottom: 0.6rem;
+  line-height: 1.25;
+}
+.finding-p {
+  font-size: 0.85rem;
+  color: #7A7468;
+  line-height: 1.7;
+}
+
+/* ── FOOTNOTE ─────────────────────────────────────────────── */
+#footnote {
+  border-top: 1px solid #D0C9BC;
+  padding: 2.5rem 0 4rem;
+}
+.footnote-text {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  color: #B0A898;
+  line-height: 1.9;
+  max-width: 80ch;
+}
+.footnote-text strong {
+  color: #7A7468;
+  font-weight: 500;
+}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  html { font-size: 16px; }
+  .opener-numbers { grid-template-columns: 1fr; gap: 1.5rem; }
+  .opener-stat + .opener-stat { border-left: none; border-top: 1px solid rgba(245,240,232,0.08); padding-left: 0; padding-top: 1.5rem; }
+  .cost-cols { grid-template-columns: 1fr; }
+  .cost-col + .cost-col { border-left: none; border-top: 2px solid #F5F0E8; }
+  .stage { grid-template-columns: 1fr; }
+  .stage-gutter { flex-direction: row; writing-mode: initial; }
+  .stage-age { writing-mode: initial; transform: none; }
+  .total-grid { grid-template-columns: 1fr; }
+  .findings-grid { grid-template-columns: 1fr; }
+  .share-row { grid-template-columns: 40px 1fr 40px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ OPENER ═══════ -->
+<section id="opener">
+  <div class="opener-main">
+    <div class="opener-kicker">The Diverging American Dream &nbsp;·&nbsp; Data Analysis</div>
+    <h1 class="opener-h1">
+      The cost of<br>
+      a child in<br>
+      America:<br>
+      <em>1960 vs. today</em>
+    </h1>
+    <p class="opener-deck">
+      Follow one symbolic American child from birth through college. 
+      Every figure shown in 2023 real dollars — so the comparison is honest.
+      What you'll find is not inflation. It is structural change in 
+      what it costs to be a parent in the United States.
+    </p>
+    <div class="opener-numbers">
+      <div class="opener-stat">
+        <span class="opener-stat-num">10.3×</span>
+        <span class="opener-stat-label">General CPI<br>1960 → 2023</span>
+      </div>
+      <div class="opener-stat">
+        <span class="opener-stat-num">14.9×</span>
+        <span class="opener-stat-label">Tuition & childcare<br>real price growth</span>
+      </div>
+      <div class="opener-stat">
+        <span class="opener-stat-num">14.2×</span>
+        <span class="opener-stat-label">Hospital services<br>real price growth</span>
+      </div>
+    </div>
+  </div>
+  <div class="opener-scroll">
+    <span class="opener-scroll-text">Scroll to follow the journey ↓</span>
+  </div>
+</section>
+
+<!-- ═══════ STAGE INTRO ═══════ -->
+<div class="section-break container">
+  <div class="section-num">The timeline</div>
+  <h2 class="section-h">Birth through college,<br>then and now</h2>
+  <p class="section-intro">
+    Each stage shows what a middle-income family spent at that moment 
+    in 1960 versus what the same family spends today, in identical 
+    2023 dollars. Blue is 1960. Red is now.
+  </p>
+</div>
+
+<div class="stages container">
+
+  <!-- STAGE 0: Before birth -->
+  <div class="stage" id="stage-0">
+    <div class="stage-gutter">
+      <div class="stage-emoji" aria-hidden="true">🤰</div>
+      <div class="stage-age">Before birth</div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-title">The decision to start a family</div>
+      <div class="cost-cols">
+        <div class="cost-col cost-col--1960">
+          <div class="cost-year cost-year--1960">1960</div>
+          <div class="cost-figure fig--1960">A given</div>
+          <div class="cost-desc">
+            In 1960, 72% of adults were married. A single earner at 
+            the median wage could support a family of four. Having 
+            children was the default — the question was how many, 
+            not whether.
+          </div>
+        </div>
+        <div class="cost-col cost-col--2024">
+          <div class="cost-year cost-year--2024">2024</div>
+          <div class="cost-figure fig--2024">A calculation</div>
+          <div class="cost-desc">
+            In 2024, only 47% of households include a married couple. 
+            71% of Americans say having children is not affordable for 
+            most people. The decision that was once assumed is now 
+            subject to spreadsheets.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 1: Hospital delivery -->
+  <div class="stage" id="stage-1">
+    <div class="stage-gutter">
+      <div class="stage-emoji" aria-hidden="true">👶</div>
+      <div class="stage-age">Birth</div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-title">Hospital delivery</div>
+      <div class="cost-cols">
+        <div class="cost-col cost-col--1960">
+          <div class="cost-year cost-year--1960">1960</div>
+          <div class="cost-figure fig--1960">$2,060</div>
+          <div class="cost-desc">
+            Average vaginal delivery, in 2023 dollars.
+            A manageable one-time cost for a family earning 
+            a median income.
+          </div>
+          <div class="cost-nominal">~$200 nominal in 1960</div>
+        </div>
+        <div class="cost-col cost-col--2024">
+          <div class="cost-year cost-year--2024">2023</div>
+          <div class="cost-figure fig--2024">$18,865</div>
+          <div class="cost-desc">
+            Average vaginal delivery, facility fee alone. 
+            Before complications, before anesthesia is billed 
+            separately, before the pediatrician visit. (AHRQ)
+          </div>
+          <span class="mult">9.2× more in real terms</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 2: Infant childcare -->
+  <div class="stage" id="stage-2">
+    <div class="stage-gutter">
+      <div class="stage-emoji" aria-hidden="true">🍼</div>
+      <div class="stage-age">Ages 0–2</div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-title">Infant care — the new cost that barely existed</div>
+      <div class="cost-cols">
+        <div class="cost-col cost-col--1960">
+          <div class="cost-year cost-year--1960">1960</div>
+          <div class="cost-figure fig--1960">~$0</div>
+          <div class="cost-desc">
+            Center-based infant care was rare. Single-earner households 
+            were the norm — mothers typically stayed home during the 
+            infant years. The cost did not exist as a budget line.
+          </div>
+        </div>
+        <div class="cost-col cost-col--2024">
+          <div class="cost-year cost-year--2024">2022</div>
+          <div class="cost-figure fig--2024">$9,025/yr</div>
+          <div class="cost-desc">
+            National median, center-based infant care. (DOL NDCP 2022)<br>
+            In Washington D.C.: <strong style="color:#B84A2E">$25,480/year</strong>.<br>
+            For the median lower-quintile family, this is 
+            <strong style="color:#B84A2E">53%</strong> of annual income.
+          </div>
+          <span class="mult">New cost — effectively zero in 1960</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 3: Preschool -->
+  <div class="stage" id="stage-3">
+    <div class="stage-gutter">
+      <div class="stage-emoji" aria-hidden="true">🧒</div>
+      <div class="stage-age">Ages 3–5</div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-title">Preschool years — no relief after infancy</div>
+      <div class="cost-cols">
+        <div class="cost-col cost-col--1960">
+          <div class="cost-year cost-year--1960">1960</div>
+          <div class="cost-figure fig--1960">Minimal</div>
+          <div class="cost-desc">
+            Formal preschool programs were rare. Head Start didn't 
+            begin until 1965. Most care was provided at home or by 
+            extended family at no cost.
+          </div>
+        </div>
+        <div class="cost-col cost-col--2024">
+          <div class="cost-year cost-year--2024">2022</div>
+          <div class="cost-figure fig--2024">$8,008/yr</div>
+          <div class="cost-desc">
+            National median center-based preschool cost. (DOL NDCP 2022)
+            For most two-earner households, this follows two to three 
+            years of infant and toddler care with no gap in spending.
+          </div>
+          <span class="mult">Effectively a new cost category since 1960</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 4: K-12 -->
+  <div class="stage" id="stage-4">
+    <div class="stage-gutter">
+      <div class="stage-emoji" aria-hidden="true">📚</div>
+      <div class="stage-age">Ages 6–17</div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-title">Twelve years of school</div>
+      <div class="cost-cols">
+        <div class="cost-col cost-col--1960">
+          <div class="cost-year cost-year--1960">1960</div>
+          <div class="cost-figure fig--1960">Low burden</div>
+          <div class="cost-desc">
+            Public school was free. Clothes, supplies, and activities 
+            were modest. A single earner's wage left substantial room 
+            for savings and discretionary spending.
+          </div>
+        </div>
+        <div class="cost-col cost-col--2024">
+          <div class="cost-year cost-year--2024">2024</div>
+          <div class="cost-figure fig--2024">Rising fast</div>
+          <div class="cost-desc">
+            School is still free but aftercare and summer programs now 
+            fill the gap left by two-earner households, adding 
+            $3,000–8,000 per year. Healthcare costs for a family of 
+            four now average $24,000 per year in employer premiums 
+            plus out-of-pocket.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STAGE 5: College -->
+  <div class="stage" id="stage-5">
+    <div class="stage-gutter">
+      <div class="stage-emoji" aria-hidden="true">🎓</div>
+      <div class="stage-age">Ages 18–22</div>
+    </div>
+    <div class="stage-body">
+      <div class="stage-title">One year of public university</div>
+      <div class="cost-cols">
+        <div class="cost-col cost-col--1960">
+          <div class="cost-year cost-year--1960">1970</div>
+          <div class="cost-figure fig--1960">$2,808</div>
+          <div class="cost-desc">
+            In-state tuition and fees, 2023 dollars. Affordable on 
+            a part-time summer job. Student loan debt was not yet 
+            a societal phenomenon. (College Board)
+          </div>
+          <div class="cost-nominal">$358 nominal in 1969–70</div>
+        </div>
+        <div class="cost-col cost-col--2024">
+          <div class="cost-year cost-year--2024">2023</div>
+          <div class="cost-figure fig--2024">$11,260</div>
+          <div class="cost-desc">
+            In-state tuition and fees at a public 4-year university. 
+            (College Board 2022–23) This is tuition only — room, board, 
+            and books add another $14,000–18,000 per year at most 
+            public schools.
+          </div>
+          <span class="mult">4.0× the real cost since 1970</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .stages -->
+
+<!-- ═══════ TOTAL ═══════ -->
+<section id="total">
+  <div class="container">
+    <div class="total-kicker">The final tally · birth to age 18</div>
+    <h2 class="total-h">What does raising<br>a child actually cost?</h2>
+    <div class="total-grid">
+      <div class="total-card">
+        <div class="total-card-year tc-yr-60">1960 · Middle-income family</div>
+        <div class="total-card-amount tca-60">$259,840</div>
+        <div class="total-card-sub">
+          In 2023 real dollars<br>
+          USDA <em>Expenditures on Children by Families</em><br>
+          ($25,229 nominal in 1960)
+        </div>
+      </div>
+      <div class="total-card">
+        <div class="total-card-year tc-yr-24">2015 · Middle-income family</div>
+        <div class="total-card-amount tca-24">$310,000</div>
+        <div class="total-card-sub">
+          Inflation-adjusted projected lifetime cost<br>
+          USDA last report (2017)<br>
+          ($233,610 nominal)
+        </div>
+      </div>
+    </div>
+
+    <div class="share-section" id="shareSection">
+      <div class="share-label">Cost of raising a child as a share of annual household income · middle quintile</div>
+      <div class="share-row">
+        <div class="share-yr">1960</div>
+        <div class="share-track">
+          <div class="share-fill sf-60" id="fill60"></div>
+        </div>
+        <div class="share-pct sp-60">~15%</div>
+      </div>
+      <div class="share-row">
+        <div class="share-yr">2024</div>
+        <div class="share-track">
+          <div class="share-fill sf-24" id="fill24"></div>
+        </div>
+        <div class="share-pct sp-24">~27%</div>
+      </div>
+      <p style="font-family:'DM Mono',monospace;font-size:0.6rem;letter-spacing:0.06em;color:rgba(245,240,232,0.2);margin-top:1rem;">
+        Per year of raising a child · Excludes college · Middle quintile household
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FINDINGS ═══════ -->
+<section id="findings">
+  <div class="container">
+    <div class="findings-header">
+      <div class="section-num">What the data shows</div>
+      <h2 class="section-h">The child penalty<br>has more than doubled.</h2>
+    </div>
+    <div class="findings-grid">
+      <div class="finding">
+        <div class="finding-n">01</div>
+        <h3 class="finding-h">The new cost is childcare</h3>
+        <p class="finding-p">
+          In 1960 childcare was not a budget category — it simply did not 
+          exist for most families. Today the national median infant center-based 
+          care costs $9,025 per year. In high-cost cities it exceeds $25,000. 
+          This single new expense explains most of the divergence between 
+          what parenthood cost then and what it costs now.
+        </p>
+      </div>
+      <div class="finding">
+        <div class="finding-n">02</div>
+        <h3 class="finding-h">Healthcare grew 14× faster than wages</h3>
+        <p class="finding-p">
+          Hospital services rose 14.2× in real terms since 1967, 
+          while average wages rose roughly 3× over the same period. 
+          A delivery that cost the equivalent of $2,060 in 1960 now 
+          costs $18,865 — before any complications, before the 
+          anesthesiologist's separate bill.
+        </p>
+      </div>
+      <div class="finding">
+        <div class="finding-n">03</div>
+        <h3 class="finding-h">College became a second mortgage</h3>
+        <p class="finding-p">
+          Public university tuition rose 14.9× in real terms since 1978. 
+          A year at a public university cost $2,808 in today's dollars in 1970; 
+          it costs $11,260 today in tuition alone, before room and board. 
+          For a middle-income family planning four years, that is $45,000 
+          in tuition at today's prices versus $11,000 in 1970 dollars.
+        </p>
+      </div>
+      <div class="finding">
+        <div class="finding-n">04</div>
+        <h3 class="finding-h">The fertility rate is the verdict</h3>
+        <p class="finding-p">
+          The U.S. total fertility rate hit a record low of 1.60 in 2024 — 
+          well below the 2.1 replacement level. Research estimates rising 
+          housing costs alone explain approximately 51% of the fertility 
+          decline between the 2000s and 2010s (Couillard, 2024). The cost 
+          of a child, not the desire for one, is what changed.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTNOTE ═══════ -->
+<footer id="footnote">
+  <div class="container">
+    <p class="footnote-text">
+      <strong>Sources:</strong>
+      AHRQ Average Hospital Delivery Costs ·
+      DOL National Database of Childcare Prices (NDCP) 2022 ·
+      College Board Trends in College Pricing ·
+      USDA <em>Expenditures on Children by Families</em> (1960 &amp; 2015 reports) ·
+      BLS Consumer Price Index via FRED (CPIAUCSL, CUUR0000SEMC, CUUR0000SEEB) ·
+      BYU American Family Survey 2025 ·
+      Couillard (2024), University of Toronto ·
+      Pew Research Center (2024) ·
+      All historical costs deflated to 2023 dollars using CPIAUCSL (×10.30 for 1960 costs).
+      <br><br>
+      <strong>Project:</strong>
+      <em>The Diverging American Dream: Inequality, Cost of Living, and Family Formation in the United States, 1960–2024.</em>
+    </p>
+  </div>
+</footer>
+
+<script>
+// Scroll-triggered stage reveal
+const stageObserver = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      stageObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+document.querySelectorAll('.stage').forEach((el, i) => {
+  el.style.transitionDelay = (i * 0.04) + 's';
+  stageObserver.observe(el);
+});
+
+// Animate the income-share bars when scrolled into view
+const shareObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      setTimeout(() => {
+        document.getElementById('fill60').style.width = '55%';
+        document.getElementById('fill24').style.width = '100%';
+      }, 400);
+      shareObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.4 });
+
+const shareSection = document.getElementById('shareSection');
+if (shareSection) shareObserver.observe(shareSection);
+</script>
+
+</body>
+</html>

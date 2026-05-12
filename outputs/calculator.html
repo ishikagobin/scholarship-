@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The American Household Budget Calculator</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:    #0f0e0b;
+  --paper:  #f5f0e8;
+  --cream:  #ede8dc;
+  --rule:   #d0c9bc;
+  --muted:  #7a7468;
+  --amber:  #c8872a;
+  --rust:   #b84a2e;
+  --teal:   #2a7c6f;
+  --blue:   #2a6faf;
+  --red:    #b84a2e;
+  --font:   'Playfair Display', Georgia, serif;
+  --sans:   'DM Sans', sans-serif;
+  --mono:   'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+.page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem 4rem;
+}
+.page-title {
+  font-family: var(--font);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 900;
+  line-height: 1.1;
+  margin-bottom: .5rem;
+}
+.page-title em { font-style: italic; color: var(--rust); }
+.page-sub {
+  font-size: .95rem;
+  color: var(--muted);
+  max-width: 60ch;
+  margin-bottom: 2rem;
+  line-height: 1.65;
+}
+.section-label {
+  font-family: var(--mono);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.section-label i { font-size: 13px; }
+.card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  padding: 1rem 1.25rem;
+  margin-bottom: .875rem;
+}
+.btn-row { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn {
+  padding: 5px 12px;
+  font-size: .78rem;
+  font-family: var(--sans);
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background .15s, border-color .15s;
+  border-radius: 3px;
+}
+.btn i { font-size: 13px; }
+.btn:hover { background: var(--cream); }
+.btn.sel {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .875rem;
+  margin-bottom: .875rem;
+}
+.in-label {
+  font-size: .78rem;
+  color: var(--muted);
+  margin-bottom: .5rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--mono);
+  letter-spacing: .04em;
+}
+.in-label i { font-size: 13px; }
+.map-layout {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+}
+.map-box svg { width: 100%; display: block; }
+.region-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin-top: 8px;
+}
+.rleg {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .72rem;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.rleg-dot { width: 10px; height: 10px; border-radius: 2px; }
+.region-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 2px;
+}
+.kids-section {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.kids-ctrl-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.kctrls { display: flex; gap: 6px; }
+.kbtn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .15s;
+}
+.kbtn:hover { background: var(--cream); }
+.knum {
+  font-family: var(--font);
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--amber);
+}
+.klabel {
+  font-family: var(--mono);
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--muted);
+}
+.baby-stage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  min-height: 46px;
+  flex: 0 0 auto;
+  padding-top: 3px;
+}
+.bicon {
+  font-size: 26px;
+  animation: pop .2s ease both;
+  display: inline-block;
+}
+@keyframes pop {
+  from { transform: scale(0) rotate(-15deg); opacity: 0; }
+  to   { transform: scale(1) rotate(0deg);   opacity: 1; }
+}
+.chip-wrap { flex: 1; }
+.chip-title {
+  font-size: .75rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+  font-family: var(--mono);
+  letter-spacing: .04em;
+}
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip {
+  padding: 3px 10px;
+  font-size: .72rem;
+  border: 1px solid var(--rule);
+  border-radius: 99px;
+  background: var(--paper);
+  color: var(--muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  transition: all .15s;
+}
+.chip i { font-size: 11px; }
+.chip:hover { border-color: var(--ink); color: var(--ink); }
+.chip.sel {
+  background: var(--teal);
+  color: #fff;
+  border-color: var(--teal);
+}
+.divider {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 1.25rem 0;
+}
+.results {
+  background: var(--cream);
+  border: 1px solid var(--rule);
+  padding: 1.25rem 1.5rem;
+}
+.res-title {
+  font-family: var(--font);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: .75rem;
+  color: var(--ink);
+}
+.leg-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: .75rem;
+}
+.leg {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: .72rem;
+  color: var(--muted);
+  font-family: var(--mono);
+}
+.leg-sq { width: 10px; height: 10px; border-radius: 2px; }
+.cat-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 9px;
+}
+.cat-ico {
+  font-size: 15px;
+  color: var(--muted);
+  width: 17px;
+  flex-shrink: 0;
+}
+.cat-lbl {
+  font-size: .78rem;
+  color: var(--muted);
+  width: 148px;
+  flex-shrink: 0;
+  font-family: var(--sans);
+}
+.bars {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.btrack {
+  height: 11px;
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bfill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width .45s cubic-bezier(.4,0,.2,1);
+}
+.b60 { background: #2a6faf; }
+.b24 { background: #b84a2e; }
+.pcts {
+  font-size: .72rem;
+  white-space: nowrap;
+  min-width: 82px;
+  text-align: right;
+  font-family: var(--mono);
+}
+.c60 { color: #2a6faf; font-weight: 500; }
+.c24 { color: #b84a2e; font-weight: 500; }
+.callout {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--amber);
+  padding: .875rem 1rem;
+  margin-top: .875rem;
+  font-size: .85rem;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  font-size: .78rem;
+  font-weight: 500;
+  font-family: var(--mono);
+  margin-top: 8px;
+  border-radius: 2px;
+}
+.badge-bad { background: #fce8e3; color: var(--rust); border: 1px solid #f0b8aa; }
+.badge-ok  { background: #e3f0ec; color: var(--teal); border: 1px solid #a8d4c4; }
+.source-note {
+  font-size: .68rem;
+  color: var(--muted);
+  font-family: var(--mono);
+  margin-top: 1.5rem;
+  line-height: 1.7;
+  border-top: 1px solid var(--rule);
+  padding-top: .75rem;
+}
+@media (max-width: 640px) {
+  .two-col { grid-template-columns: 1fr; }
+  .map-layout { grid-template-columns: 1fr; }
+  .region-btns { flex-direction: row; flex-wrap: wrap; }
+  .kids-section { flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<h1 class="page-title">Can you <em>afford</em> this family?</h1>
+<p class="page-sub">
+  Select your situation below. The calculator shows what that same household
+  would have cost in 1960 vs. today — as a share of after-tax income.
+  The gap between those two numbers is the story of six decades of
+  diverging costs.
+</p>
+
+<div class="section-label"><i class="ti ti-wallet" aria-hidden="true"></i>Income quintile</div>
+<div class="card">
+  <div class="btn-row" id="qBtns">
+    <button class="btn" onclick="setQ(this,'q1')"><i class="ti ti-arrow-down-circle" aria-hidden="true"></i>Bottom 20%<span style="font-size:.7rem;color:inherit;margin-left:3px;opacity:.65">~$16k</span></button>
+    <button class="btn" onclick="setQ(this,'q2')"><i class="ti ti-arrow-down" aria-hidden="true"></i>2nd quintile<span style="font-size:.7rem;color:inherit;margin-left:3px;opacity:.65">~$43k</span></button>
+    <button class="btn sel" onclick="setQ(this,'q3')"><i class="ti ti-minus" aria-hidden="true"></i>Middle 20%<span style="font-size:.7rem;color:inherit;margin-left:3px;opacity:.65">~$72k</span></button>
+    <button class="btn" onclick="setQ(this,'q4')"><i class="ti ti-arrow-up" aria-hidden="true"></i>4th quintile<span style="font-size:.7rem;color:inherit;margin-left:3px;opacity:.65">~$113k</span></button>
+    <button class="btn" onclick="setQ(this,'q5')"><i class="ti ti-arrow-up-circle" aria-hidden="true"></i>Top 20%<span style="font-size:.7rem;color:inherit;margin-left:3px;opacity:.65">~$232k</span></button>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <div class="in-label"><i class="ti ti-home" aria-hidden="true"></i>Housing status</div>
+    <div class="btn-row">
+      <button class="btn sel tenBtn" onclick="setSingle(this,'tenure','renter','.tenBtn')"><i class="ti ti-building" aria-hidden="true"></i>Renter</button>
+      <button class="btn tenBtn" onclick="setSingle(this,'tenure','owner','.tenBtn')"><i class="ti ti-home-check" aria-hidden="true"></i>Homeowner</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="in-label"><i class="ti ti-heart-rate" aria-hidden="true"></i>Healthcare coverage</div>
+    <div class="btn-row">
+      <button class="btn sel hcBtn" onclick="setSingle(this,'hc','employer','.hcBtn')"><i class="ti ti-briefcase" aria-hidden="true"></i>Employer plan</button>
+      <button class="btn hcBtn" onclick="setSingle(this,'hc','private','.hcBtn')"><i class="ti ti-credit-card" aria-hidden="true"></i>Private plan</button>
+      <button class="btn hcBtn" onclick="setSingle(this,'hc','none','.hcBtn')"><i class="ti ti-x" aria-hidden="true"></i>Uninsured</button>
+    </div>
+  </div>
+</div>
+
+<div class="section-label"><i class="ti ti-map" aria-hidden="true"></i>Region — click any state on the map</div>
+<div class="card">
+  <div class="map-layout">
+    <div class="map-box">
+      <div id="mapContainer"></div>
+      <div class="region-legend">
+        <div class="rleg"><div class="rleg-dot" style="background:#b5d4f4"></div>Northeast</div>
+        <div class="rleg"><div class="rleg-dot" style="background:#9fe1cb"></div>Midwest</div>
+        <div class="rleg"><div class="rleg-dot" style="background:#fac775"></div>South</div>
+        <div class="rleg"><div class="rleg-dot" style="background:#f0997b"></div>West</div>
+        <div class="rleg"><div class="rleg-dot" style="background:#b84a2e"></div>Selected region</div>
+      </div>
+    </div>
+    <div class="region-btns" id="regBtns">
+      <button class="btn sel regBtn" onclick="setRegion(this,'national')"><i class="ti ti-globe" aria-hidden="true"></i>National avg</button>
+      <button class="btn regBtn" onclick="setRegion(this,'northeast')"><i class="ti ti-map-pin" aria-hidden="true"></i>Northeast</button>
+      <button class="btn regBtn" onclick="setRegion(this,'midwest')"><i class="ti ti-map-pin" aria-hidden="true"></i>Midwest</button>
+      <button class="btn regBtn" onclick="setRegion(this,'south')"><i class="ti ti-map-pin" aria-hidden="true"></i>South</button>
+      <button class="btn regBtn" onclick="setRegion(this,'west')"><i class="ti ti-map-pin" aria-hidden="true"></i>West</button>
+    </div>
+  </div>
+</div>
+
+<div class="section-label"><i class="ti ti-baby-carriage" aria-hidden="true"></i>Children</div>
+<div class="card">
+  <div class="kids-section">
+    <div class="kids-ctrl-col">
+      <div class="kctrls">
+        <button class="kbtn" onclick="changeKids(-1)" aria-label="Remove a child">−</button>
+        <button class="kbtn" onclick="changeKids(1)" aria-label="Add a child">+</button>
+      </div>
+      <div class="knum" id="knum">2</div>
+      <div class="klabel">children</div>
+    </div>
+    <div id="babyStage" class="baby-stage"></div>
+    <div class="chip-wrap">
+      <div class="chip-title">Ages of children (select all that apply)</div>
+      <div class="chips">
+        <div class="chip sel" onclick="toggleAge(this,'infant')"><i class="ti ti-baby-carriage" aria-hidden="true"></i>Infant 0–2</div>
+        <div class="chip" onclick="toggleAge(this,'toddler')"><i class="ti ti-walk" aria-hidden="true"></i>Toddler 2–4</div>
+        <div class="chip" onclick="toggleAge(this,'preschool')"><i class="ti ti-abc" aria-hidden="true"></i>Preschool 4–5</div>
+        <div class="chip sel" onclick="toggleAge(this,'school')"><i class="ti ti-school" aria-hidden="true"></i>School-age 6–17</div>
+        <div class="chip" onclick="toggleAge(this,'college')"><i class="ti ti-book" aria-hidden="true"></i>College 18–22</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<div class="results">
+  <div class="res-title" id="resTitle">Middle 20% renter &middot; 2 children &middot; national average</div>
+  <div class="leg-row">
+    <div class="leg"><div class="leg-sq" style="background:#2a6faf"></div>1960</div>
+    <div class="leg"><div class="leg-sq" style="background:#b84a2e"></div>2024</div>
+    <div class="leg" style="margin-left:auto;font-size:.68rem" id="incLine"></div>
+  </div>
+  <div id="barRows"></div>
+  <div class="callout" id="callout"></div>
+</div>
+
+<div class="source-note">
+  Sources: BLS Consumer Expenditure Survey historical tables &middot;
+  DOL National Database of Childcare Prices (NDCP) 2022 &middot;
+  College Board / BLS CPI CUUR0000SEEB &middot;
+  U.S. Census Table H-3 (income in 2023 real dollars) &middot;
+  BLS CE Survey Table 1400 (regional adjustments) &middot;
+  Map: D3 + TopoJSON US Atlas v3 &middot;
+  Project: <em>The Diverging American Dream</em>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js"></script>
+<script>
+const ST = { q:'q3', tenure:'renter', hc:'employer', region:'national', kids:2, ages:['infant','school'] };
+
+const BASE = {
+  q1:{ inc60:17000,  inc24:16000,  lbl:'bottom 20%'   },
+  q2:{ inc60:34000,  inc24:43000,  lbl:'2nd quintile'  },
+  q3:{ inc60:52000,  inc24:72000,  lbl:'middle 20%'    },
+  q4:{ inc60:72000,  inc24:113000, lbl:'4th quintile'  },
+  q5:{ inc60:130000, inc24:232000, lbl:'top 20%'       },
+};
+
+const S60 = {
+  q1:{ H:27, F:35, Hc:5,  T:13, C:0, D:20 },
+  q2:{ H:26, F:32, Hc:5,  T:14, C:0, D:23 },
+  q3:{ H:25, F:28, Hc:5,  T:14, C:0, D:28 },
+  q4:{ H:24, F:24, Hc:5,  T:15, C:0, D:32 },
+  q5:{ H:22, F:20, Hc:4,  T:14, C:0, D:40 },
+};
+const S24 = {
+  q1:{ H:41, F:17, Hc:9,  T:17, C:0, D:16 },
+  q2:{ H:37, F:15, Hc:9,  T:18, C:0, D:21 },
+  q3:{ H:33, F:13, Hc:9,  T:18, C:0, D:27 },
+  q4:{ H:29, F:11, Hc:8,  T:17, C:0, D:35 },
+  q5:{ H:25, F:9,  Hc:7,  T:15, C:0, D:44 },
+};
+
+const RADJ = { national:0, northeast:6, west:5, south:-3, midwest:-2 };
+const TADJ = { renter:3, owner:-2 };
+const HCADJ = { employer:0, private:3, none:2 };
+
+// Childcare costs as % of income, by age and quintile
+// Source: DOL NDCP 2022 annual costs vs Census quintile incomes
+const CH60 = { infant:0, toddler:0, preschool:1, school:1, college:5 };
+const CH24 = {
+  q1:  { infant:53, toddler:47, preschool:41, school:23, college:40 },
+  q2:  { infant:34, toddler:30, preschool:27, school:15, college:26 },
+  q3:  { infant:21, toddler:18, preschool:16, school:9,  college:16 },
+  q4:  { infant:13, toddler:12, preschool:10, school:6,  college:10 },
+  q5:  { infant:6,  toddler:6,  preschool:5,  school:3,  college:5  },
+};
+
+const BABIES = ['👶','🧒','👦','👧'];
+const REGION_COLORS = {
+  northeast:'#b5d4f4', midwest:'#9fe1cb', south:'#fac775', west:'#f0997b'
+};
+const REGION_SEL = '#b84a2e';
+
+const STATE_ABBR = {
+  'Alabama':'AL','Alaska':'AK','Arizona':'AZ','Arkansas':'AR','California':'CA',
+  'Colorado':'CO','Connecticut':'CT','Delaware':'DE','Florida':'FL','Georgia':'GA',
+  'Hawaii':'HI','Idaho':'ID','Illinois':'IL','Indiana':'IN','Iowa':'IA',
+  'Kansas':'KS','Kentucky':'KY','Louisiana':'LA','Maine':'ME','Maryland':'MD',
+  'Massachusetts':'MA','Michigan':'MI','Minnesota':'MN','Mississippi':'MS',
+  'Missouri':'MO','Montana':'MT','Nebraska':'NE','Nevada':'NV',
+  'New Hampshire':'NH','New Jersey':'NJ','New Mexico':'NM','New York':'NY',
+  'North Carolina':'NC','North Dakota':'ND','Ohio':'OH','Oklahoma':'OK',
+  'Oregon':'OR','Pennsylvania':'PA','Rhode Island':'RI','South Carolina':'SC',
+  'South Dakota':'SD','Tennessee':'TN','Texas':'TX','Utah':'UT','Vermont':'VT',
+  'Virginia':'VA','Washington':'WA','West Virginia':'WV','Wisconsin':'WI',
+  'Wyoming':'WY','District of Columbia':'DC'
+};
+const STATE_REGION = {
+  ME:'northeast',NH:'northeast',VT:'northeast',MA:'northeast',RI:'northeast',
+  CT:'northeast',NY:'northeast',NJ:'northeast',PA:'northeast',
+  OH:'midwest',MI:'midwest',IN:'midwest',IL:'midwest',WI:'midwest',
+  MN:'midwest',IA:'midwest',MO:'midwest',ND:'midwest',SD:'midwest',
+  NE:'midwest',KS:'midwest',
+  DE:'south',MD:'south',DC:'south',VA:'south',WV:'south',NC:'south',
+  SC:'south',GA:'south',FL:'south',KY:'south',TN:'south',AL:'south',
+  MS:'south',AR:'south',LA:'south',OK:'south',TX:'south',
+  MT:'west',ID:'west',WY:'west',CO:'west',NM:'west',AZ:'west',UT:'west',
+  NV:'west',WA:'west',OR:'west',CA:'west',AK:'west',HI:'west'
+};
+
+const CATS = [
+  { k:'H',  ico:'ti-home',          lbl:'Housing'               },
+  { k:'F',  ico:'ti-shopping-cart', lbl:'Food'                  },
+  { k:'Hc', ico:'ti-heart-rate',    lbl:'Healthcare'            },
+  { k:'T',  ico:'ti-car',           lbl:'Transportation'        },
+  { k:'C',  ico:'ti-baby-carriage', lbl:'Children & childcare'  },
+  { k:'D',  ico:'ti-sparkles',      lbl:'Discretionary (left over)' },
+];
+
+const RLABELS = {
+  national:'national average', northeast:'Northeast',
+  midwest:'Midwest', south:'South', west:'West'
+};
+
+// ── Map ──────────────────────────────────────────────────────
+let mapReady = false;
+let svgSel, pathFn, abbrMap = {};
+
+function buildMap() {
+  d3.json('https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json')
+    .then(us => {
+      us.objects.states.geometries.forEach(g => {
+        const nm = g.properties && g.properties.name;
+        if (nm && STATE_ABBR[nm]) abbrMap[g.id] = STATE_ABBR[nm];
+      });
+
+      const W = 520, H = 320;
+      const proj = d3.geoAlbersUsa().scale(640).translate([W/2, H/2]);
+      pathFn = d3.geoPath(proj);
+
+      svgSel = d3.select('#mapContainer').append('svg')
+        .attr('viewBox', `0 0 ${W} ${H}`)
+        .attr('width', '100%')
+        .style('display', 'block');
+
+      svgSel.selectAll('path')
+        .data(topojson.feature(us, us.objects.states).features)
+        .join('path')
+        .attr('d', pathFn)
+        .attr('stroke', '#fff')
+        .attr('stroke-width', '0.7')
+        .attr('class', 'state-path')
+        .style('cursor', 'pointer')
+        .on('mouseover', function(e, d) {
+          const ab = abbrMap[d.id];
+          const r  = STATE_REGION[ab];
+          if (r && r !== ST.region)
+            d3.select(this).attr('fill', REGION_SEL).attr('opacity', '0.55');
+        })
+        .on('mouseout', function() {
+          d3.select(this).attr('opacity', '1');
+          colorMap();
+        })
+        .on('click', function(e, d) {
+          const ab = abbrMap[d.id];
+          const r  = STATE_REGION[ab] || 'national';
+          ST.region = r;
+          document.querySelectorAll('.regBtn').forEach(b => {
+            const match = b.textContent.trim().toLowerCase().replace(/\s+/g,' ');
+            b.classList.toggle('sel', match.startsWith(r === 'national' ? 'national' : r));
+          });
+          colorMap();
+          render();
+        });
+
+      mapReady = true;
+      colorMap();
+    })
+    .catch(() => {
+      document.getElementById('mapContainer').innerHTML =
+        '<p style="font-size:.8rem;color:#7a7468;padding:8px 0">Map unavailable — use the region buttons above</p>';
+    });
+}
+
+function colorMap() {
+  if (!mapReady) return;
+  svgSel.selectAll('.state-path').each(function(d) {
+    const ab = abbrMap[d.id];
+    const r  = STATE_REGION[ab];
+    if (!r) { d3.select(this).attr('fill', '#d0c9bc'); return; }
+    d3.select(this).attr('fill', r === ST.region ? REGION_SEL : (REGION_COLORS[r] || '#d0c9bc'));
+  });
+}
+
+// ── Compute ──────────────────────────────────────────────────
+function compute() {
+  const q = ST.q, t = ST.tenure, r = ST.region, h = ST.hc;
+  const s60 = Object.assign({}, S60[q]);
+  const s24 = Object.assign({}, S24[q]);
+
+  const ra = RADJ[r] || 0, ta = TADJ[t] || 0, ha = HCADJ[h] || 0;
+  s60.H  = Math.max(0, s60.H  + Math.round(ra * .4) + Math.round(ta * .5));
+  s24.H  = Math.max(0, s24.H  + ra + ta);
+  s60.Hc = Math.max(0, s60.Hc + Math.round(ha * .3));
+  s24.Hc = Math.max(0, s24.Hc + ha);
+
+  let c60 = 0, c24 = 0;
+  const qCH24 = CH24[q] || CH24.q3;
+  ST.ages.forEach(a => {
+    c60 += (CH60[a] || 0);
+    c24 += (qCH24[a] || 0);
+  });
+  const km = ST.kids === 0 ? 0 : (Math.min(ST.kids, 3) * .65 + .35);
+  s60.C = Math.round(c60 * km);
+  s24.C = Math.round(c24 * km);
+
+  const need60 = s60.H + s60.F + s60.Hc + s60.T + s60.C;
+  const need24 = s24.H + s24.F + s24.Hc + s24.T + s24.C;
+  s60.D = Math.max(0, 100 - need60);
+  s24.D = Math.max(0, 100 - need24);
+  return { s60, s24 };
+}
+
+// ── Render ────────────────────────────────────────────────────
+function render() {
+  const { s60, s24 } = compute();
+  const b = BASE[ST.q];
+  const tl = { renter:'renter', owner:'homeowner' };
+  const ks = ST.kids === 0 ? 'no children' : `${ST.kids} child${ST.kids > 1 ? 'ren' : ''}`;
+  const rbl = RLABELS[ST.region] || 'national average';
+
+  document.getElementById('resTitle').textContent =
+    `${b.lbl} ${tl[ST.tenure]} · ${ks} · ${rbl}`;
+  document.getElementById('incLine').textContent =
+    `1960: $${b.inc60.toLocaleString()} → 2023: $${b.inc24.toLocaleString()} (2023 real $)`;
+
+  // Baby icons
+  const bs = document.getElementById('babyStage');
+  bs.innerHTML = '';
+  if (ST.kids === 0) {
+    bs.innerHTML = '<span style="font-size:.78rem;color:#7a7468">No children selected</span>';
+  } else {
+    for (let i = 0; i < Math.min(ST.kids, 4); i++) {
+      const sp = document.createElement('span');
+      sp.className = 'bicon';
+      sp.style.animationDelay = (i * 55) + 'ms';
+      sp.setAttribute('aria-hidden', 'true');
+      sp.textContent = BABIES[i % 4];
+      bs.appendChild(sp);
+    }
+    if (ST.kids > 4) {
+      const ex = document.createElement('span');
+      ex.style.cssText = 'font-size:.78rem;color:#7a7468;align-self:center;margin-left:2px';
+      ex.textContent = `+${ST.kids - 4} more`;
+      bs.appendChild(ex);
+    }
+  }
+
+  // Bar chart
+  const allV = [...Object.values(s60), ...Object.values(s24)];
+  const mx = Math.max(...allV, 1);
+  const W = 150;
+  let html = '';
+  for (const cat of CATS) {
+    if (cat.k === 'C' && ST.kids === 0) continue;
+    const v60 = s60[cat.k] || 0, v24 = s24[cat.k] || 0;
+    const w60 = Math.round((v60 / mx) * W);
+    const w24 = Math.round((v24 / mx) * W);
+    const d60 = Math.round(b.inc60 * v60 / 100);
+    const d24 = Math.round(b.inc24 * v24 / 100);
+    html += `<div class="cat-row">
+      <i class="ti ${cat.ico} cat-ico" aria-hidden="true"></i>
+      <div class="cat-lbl">${cat.lbl}</div>
+      <div class="bars">
+        <div class="btrack"><div class="bfill b60" style="width:${w60}px" title="1960: ${v60}% (~$${d60.toLocaleString()})"></div></div>
+        <div class="btrack"><div class="bfill b24" style="width:${w24}px" title="2024: ${v24}% (~$${d24.toLocaleString()})"></div></div>
+      </div>
+      <div class="pcts">
+        <span class="c60">${v60}%</span>
+        <span style="color:#a0988c"> → </span>
+        <span class="c24">${v24}%</span>
+      </div>
+    </div>`;
+  }
+  document.getElementById('barRows').innerHTML = html;
+
+  // Callout text
+  const need60 = 100 - s60.D, need24 = 100 - s24.D, diff = s24.D - s60.D;
+  const good = diff >= 0;
+  const ck = ST.kids > 0
+    ? ` Adding ${ks} (${ST.ages.join(', ')}) costs <strong style="color:#b84a2e">${s24.C}%</strong> of income today vs. <strong style="color:#2a6faf">${s60.C}%</strong> in 1960.`
+    : '';
+
+  const biggestRise = ['H','Hc','C'].map(k => ({
+    k, label: CATS.find(c=>c.k===k).lbl, rise: (s24[k]||0) - (s60[k]||0)
+  })).filter(x=>x.rise>0).sort((a,b)=>b.rise-a.rise)[0];
+
+  const biggestNote = biggestRise
+    ? ` The single biggest shift: <strong>${biggestRise.label}</strong> rose <strong style="color:#b84a2e">+${biggestRise.rise} percentage points</strong>.`
+    : '';
+
+  document.getElementById('callout').innerHTML =
+    `In 1960 this household spent <strong>${need60}%</strong> of income on necessities, leaving <strong style="color:#2a6faf">${s60.D}%</strong> discretionary. Today the same household spends <strong>${need24}%</strong> on necessities, leaving <strong style="color:#b84a2e">${s24.D}%</strong> over.${ck}${biggestNote}
+    <br><span class="badge ${good ? 'badge-ok' : 'badge-bad'}">
+      <i class="ti ${good ? 'ti-trending-up' : 'ti-trending-down'}" aria-hidden="true"></i>
+      Discretionary income: ${s60.D}% → ${s24.D}% (${diff > 0 ? '+' : ''}${diff} pp)
+    </span>`;
+
+  colorMap();
+}
+
+// ── Event handlers ────────────────────────────────────────────
+function setQ(btn, q) {
+  ST.q = q;
+  document.getElementById('qBtns').querySelectorAll('.btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  render();
+}
+function setSingle(btn, key, val, sel) {
+  ST[key] = val;
+  document.querySelectorAll(sel).forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  render();
+}
+function setRegion(btn, r) {
+  ST.region = r;
+  document.querySelectorAll('.regBtn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  colorMap();
+  render();
+}
+function changeKids(d) {
+  ST.kids = Math.max(0, Math.min(5, ST.kids + d));
+  document.getElementById('knum').textContent = ST.kids;
+  render();
+}
+function toggleAge(el, age) {
+  el.classList.toggle('sel');
+  ST.ages = ST.ages.includes(age)
+    ? ST.ages.filter(a => a !== age)
+    : [...ST.ages, age];
+  render();
+}
+
+buildMap();
+render();
+</script>
+</body>
+</html>
