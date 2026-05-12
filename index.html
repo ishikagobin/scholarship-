@@ -997,7 +997,7 @@
 
 <!-- Slide 1 — CORRECT relative path -->
 <li class="carousel-slide active" role="listitem">
-  <div class="slide-bg" style="background-image:url('images/rankings.png')"></div>
+  <div class="slide-bg" style="background-image:url('images/housingrate.png')"></div>
   <div class="slide-content">
     <div class="slide-kicker">United States · 2024</div>
     <h2 class="slide-headline">U.S. fertility rate<br>hits historic low</h2>
@@ -1007,7 +1007,7 @@
 
 <!-- Slide 2 -->
 <li class="carousel-slide" role="listitem">
-  <div class="slide-bg" style="background-image:url('images/slide2.png')"></div>
+  <div class="slide-bg" style="background-image:url('images/fertilityrate.png')"></div>
   <div class="slide-content">
     <div class="slide-kicker">Housing · 2024</div>
     <h2 class="slide-headline">Home prices reach<br>record highs</h2>
@@ -1017,7 +1017,7 @@
 
 <!-- Slide 3 -->
 <li class="carousel-slide" role="listitem">
-  <div class="slide-bg" style="background-image:url('images/slide3.png')"></div>
+  <div class="slide-bg" style="background-image:url('images/wageproblem.png')"></div>
   <div class="slide-content">
     <div class="slide-kicker">Childcare · 2022</div>
     <h2 class="slide-headline">Childcare costs now<br>exceed rent in most states</h2>
@@ -1195,7 +1195,7 @@
 
     <!-- Eleanor snapshot — 1965 -->
     <div class="reveal">
-      <p style="font-size:2.0rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;">Eleanor's household · 1965 · In 2023 real dollars</p>
+      <p style="font-size:2.0rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;">Eleanor's household · 1965 </p>
       <div class="snapshot-card">
         <div class="snapshot-cell">
           <span class="snapshot-label">Annual income</span>
@@ -1218,7 +1218,7 @@
           <span class="snapshot-note">Cost of child as % of income/yr</span>
         </div>
       </div>
-      <p class="snapshot-caption">All nominal values in this narration was adjusted to 2023 dollars using CPIAUCSL. 2023 was selected as the base year as it represents the most recent year for which all primary datasets (income, wages, housing) have complete annual observations.</p>
+      <p class="snapshot-caption">All nominal values in this visualization were adjusted to 2023 dollars using CPIAUCSL. 2023 was selected as the base year as it represents the most recent year for which all primary datasets (income, wages, housing) have complete annual observations.</p>
     </div>
 
     <!-- Chart 1: Real Median Family Income -->
@@ -1245,11 +1245,18 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
     <!-- Chart 2: Housing affordability -->
     <div class="chart-block reveal">
       <div class="chart-title">A Home Cost 3× Your Income, Not 5×</div>
-      <div class="chart-subtitle">Median home price ÷ median family income · 1963–2025 · Affordable range historically ≤ 3×</div>
+      <div class="chart-subtitle">A home used to cost 3 years of your income. Now it costs 5.</div>
       <div class="chart-frame">
         <iframe src="outputs/act1/act1_fig4_housing.html" height="560" title="Housing affordability chart"></iframe>
       </div>
       <p class="chart-source">Source: FRED · MSPUS (median home price) · MEFAINUSA672N (income, deflated to nominal)</p>
+    </div>
+
+        <!-- Causal note -->
+    <div class="causal-note reveal">
+      <h4>Shared Boom Era</h4>
+      <p>Between 1953 and 1973, real median family income grew 74% in just 20 years so roughly 3% per year. A family at the middle of the income distribution could expect to be meaningfully better off than their parents. Eleanor's household was part of that story.
+Then growth slowed. Between 1973 and 2023, a full 50 years, real median family income grew just 45%. Less growth which was spread over more than twice as long. The line kept rising, but the pace of the promise changed.</p>
     </div>
 
   </div>
@@ -1490,7 +1497,7 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 <!-- ═══════════════════════════════════════════════════════════
      SECTION 7 — THE GEOGRAPHIC DIVIDE
 ════════════════════════════════════════════════════════════ -->
-<section id="s7" class="section" aria-labelledby="s7-heading">
+<!-- <section id="s7" class="section" aria-labelledby="s7-heading">
   <div class="container">
 
     <div class="section-header reveal">
@@ -1501,7 +1508,7 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 
 
     <!-- Chart: Two Americas -->
-    <div class="chart-block reveal">
+    <!--<div class="chart-block reveal">
       <div class="chart-title">Two Americas: 2008 vs. 2022</div>
       <div class="chart-subtitle">The same map — 14 years apart · Identical color scale · The spread of red is the finding</div>
       <div class="chart-frame">
@@ -1568,7 +1575,7 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 
     </div><!-- end final-grid -->
 
-    <div class="final-sentence reveal" style="padding-bottom:7rem;">
+    <!--<div class="final-sentence reveal" style="padding-bottom:7rem;">
       <p>
         Tiffany's story is not about one woman.
         It is about how a once-broad economic promise became
@@ -1576,7 +1583,7 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
         and what the data shows when you follow the numbers
         from Eleanor's world to hers.
       </p>
-    </div>
+    </div>-->
 
   </div>
 </section>
