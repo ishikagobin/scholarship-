@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Can America Afford a Family?</title>
+
+  <!-- ── FONTS ─────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600;1,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+  /* ════════════════════════════════════════════════════════════
+     DESIGN TOKENS  —  all values from theme.py
+  ════════════════════════════════════════════════════════════ */
+  :root {
+    /* Backgrounds */
+    --paper:        #F5F0E8;
+    --ink:          #0F0E0B;
+    --surface:      #FFFFFF;
+    --surface-dark: #1A1917;
+
+    /* Text */
+    --text:         #0F0E0B;
+    --text-light:   #FFFFFF;
+    --text-muted:   #7A7468;
+    --text-muted-dark: #8A8480;
+
+    /* Borders */
+    --border:       #D0C9BC;
+    --border-dark:  #3A3835;
+    --grid:         #E0D9CE;
+
+    /* Brand colors */
+    --blue:         #2A6FAF;
+    --blue-light:   #5B9BD5;
+    --red:          #B84A2E;
+    --red-light:    #D4714F;
+    --gold:         #C8872A;
+    --gold-light:   #E0A84A;
+    --green:        #2A7C6F;
+    --green-light:  #4AA090;
+    --purple:       #7B4FA6;
+    --orange:       #C87028;
+    --gray:         #7A7468;
+    --gray-light:   #B0A898;
+
+    /* Typography */
+    --font-display: 'Playfair Display', Georgia, serif;
+    --font-body:    'Inter', sans-serif;
+    --font-mono:    'DM Mono', 'Courier New', monospace;
+
+    /* Spacing */
+    --section-pad:  6rem 0;
+    --max-w:        1100px;
+    --max-w-narrow: 720px;
+  }
+
+  /* ── RESET ───────────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--text);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  img { max-width: 100%; display: block; }
+  a   { color: inherit; text-decoration: none; }
+
+  /* ── LAYOUT UTILITIES ────────────────────────────────────── */
+  .container       { max-width: var(--max-w);       margin: 0 auto; padding: 0 2rem; }
+  .container-narrow{ max-width: var(--max-w-narrow); margin: 0 auto; padding: 0 2rem; }
+  .section         { padding: var(--section-pad); }
+  .section--dark   { background: var(--ink); color: var(--text-light); }
+  .section--cream  { background: #EDE8DC; }
+
+  /* ── TYPE UTILITIES ──────────────────────────────────────── */
+  .display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .eyebrow--muted { color: var(--text-muted); }
+  .lead {
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.7;
+    max-width: 62ch;
+  }
+  .lead--light { color: rgba(245,240,232,0.65); }
+
+  /* ── NAV ─────────────────────────────────────────────────── */
+  #nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    background: rgba(245,240,232,0.92);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text);
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-progress {
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    background: var(--gold);
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 0  —  COLD OPEN / CAROUSEL
+  ════════════════════════════════════════════════════════════ */
+  #cold-open {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    background: var(--ink);
+  }
+
+  /* Carousel slides */
+  .carousel-slides {
+    position: absolute;
+    inset: 0;
+    list-style: none;
+  }
+  .carousel-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.9s ease;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 7rem;
+  }
+  .carousel-slide.active { opacity: 1; }
+
+  /* Slide background image */
+  .slide-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.38);
+    transition: transform 6s ease;
+  }
+  .carousel-slide.active .slide-bg {
+    transform: scale(1.04);
+  }
+
+  /* Placeholder gradient for slides without images yet */
+  .slide-bg--placeholder-1 { background: linear-gradient(135deg, #1a1410 0%, #2a1a08 100%); filter: none; }
+  .slide-bg--placeholder-2 { background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%); filter: none; }
+  .slide-bg--placeholder-3 { background: linear-gradient(135deg, #1a0a0a 0%, #2e1010 100%); filter: none; }
+  .slide-bg--placeholder-4 { background: linear-gradient(135deg, #0a1a12 0%, #0f2818 100%); filter: none; }
+  .slide-bg--placeholder-5 { background: linear-gradient(135deg, #1a1220 0%, #240d34 100%); filter: none; }
+
+  .slide-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 3rem;
+    max-width: 860px;
+  }
+  .slide-kicker {
+    font-family: var(--font-body);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .slide-kicker::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--gold);
+    display: block;
+  }
+  .slide-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 5.5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.025em;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+  }
+  .slide-sub {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(245,240,232,0.55);
+    max-width: 54ch;
+    line-height: 1.65;
+  }
+
+  /* Carousel controls */
+  .carousel-dots {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 3rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 10;
+  }
+  .carousel-dot {
+    width: 28px;
+    height: 2px;
+    background: rgba(245,240,232,0.25);
+    cursor: pointer;
+    transition: background 0.3s, width 0.3s;
+    border: none;
+    padding: 0;
+  }
+  .carousel-dot.active {
+    background: var(--gold);
+    width: 44px;
+  }
+  .carousel-progress {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: rgba(245,240,232,0.1);
+    z-index: 10;
+  }
+  .carousel-progress-fill {
+    height: 100%;
+    background: var(--gold);
+    width: 0%;
+    transition: width 3.5s linear;
+  }
+
+  /* Scroll cue */
+  .scroll-cue {
+    position: absolute;
+    bottom: 2.2rem;
+    right: 3rem;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+  }
+  .scroll-cue span {
+    font-family: var(--font-body);
+    font-size: 0.62rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.25);
+    writing-mode: vertical-rl;
+  }
+  .scroll-cue-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(245,240,232,0.25), transparent);
+    animation: scrollPulse 2s infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { opacity: 0.3; }
+    50%      { opacity: 0.8; }
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     CHARACTER INTRODUCTION  (after carousel)
+  ════════════════════════════════════════════════════════════ */
+  #characters {
+    background: var(--ink);
+    padding: 5rem 0 6rem;
+    border-top: 1px solid var(--border-dark);
+  }
+  .characters-intro {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .characters-intro p {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 3vw, 2.2rem);
+    font-weight: 600;
+    font-style: italic;
+    color: rgba(245,240,232,0.85);
+    max-width: 56ch;
+    margin: 0 auto;
+    line-height: 1.45;
+  }
+  .characters-intro p em {
+    font-style: normal;
+    color: var(--gold);
+  }
+  /* ── CHARACTER SLIDESHOW ─────────────────────────────────── */
+.char-slideshow {
+  position: relative;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.char-slides {
+  position: relative;
+  overflow: hidden;
+}
+.char-slide {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+}
+.char-slide.active {
+  display: flex;
+  animation: charFadeIn 0.5s ease;
+}
+@keyframes charFadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.char-photo-wrap {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--surface-dark);
+}
+.char-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+.char-photo--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.char-photo--eleanor { background: linear-gradient(135deg, #0f2040 0%, #1a3a6a 100%); }
+.char-photo--tiffany { background: linear-gradient(135deg, #2a1a00 0%, #5a3800 100%); }
+.char-photo--destiny { background: linear-gradient(135deg, #2a0a0a 0%, #5a1a10 100%); }
+.char-photo-initials {
+  font-family: var(--font-display);
+  font-size: 6rem;
+  font-weight: 700;
+  color: rgba(245,240,232,0.10);
+  user-select: none;
+}
+.char-caption {
+  width: 100%;
+  background: var(--surface-dark);
+  border-top: 3px solid var(--border-dark);
+  padding: 1.75rem 2rem 2rem;
+}
+#charSlide-0 .char-caption { border-top-color: var(--blue); }
+#charSlide-1 .char-caption { border-top-color: var(--gold); }
+#charSlide-2 .char-caption { border-top-color: var(--red);  }
+.char-caption-name {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+.char-caption-name--eleanor { color: var(--blue-light); }
+.char-caption-name--tiffany { color: var(--gold-light); }
+.char-caption-name--destiny { color: var(--red-light);  }
+.char-caption-era {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  margin-bottom: 1rem;
+}
+.char-caption-desc {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  color: rgba(245,240,232,0.6);
+  line-height: 1.7;
+  max-width: 62ch;
+}
+.char-arrow {
+  position: absolute;
+  top: calc(50% - 3rem);
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(15,14,11,0.7);
+  border: 1px solid var(--border-dark);
+  color: rgba(245,240,232,0.55);
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  z-index: 10;
+}
+.char-arrow:hover {
+  background: rgba(200,135,42,0.2);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+.char-arrow--prev { left:  0.75rem; }
+.char-arrow--next { right: 0.75rem; }
+.char-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 1.25rem;
+}
+.char-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(245,240,232,0.2);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s;
+  padding: 0;
+}
+.char-dot.active {
+  background: var(--gold);
+  transform: scale(1.35);
+}
+
+  /* ════════════════════════════════════════════════════════════
+     SHARED SECTION HEADER
+  ════════════════════════════════════════════════════════════ */
+  .section-header {
+    margin-bottom: 3.5rem;
+  }
+  .section-header .eyebrow {
+    margin-bottom: 0.75rem;
+    display: block;
+  }
+  .section-header h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+  .section-header p {
+    font-size: 1.05rem;
+    color: var(--text-muted);
+    max-width: 62ch;
+    line-height: 1.7;
+  }
+  .section-header--centered {
+    text-align: center;
+  }
+  .section-header--centered p { margin: 0 auto; }
+  .section-header--light h2,
+  .section-header--light p { color: var(--text-light); }
+  .section-header--light p  { color: rgba(245,240,232,0.55); }
+
+  /* ════════════════════════════════════════════════════════════
+     SHARED CHART CONTAINER
+  ════════════════════════════════════════════════════════════ */
+  .chart-block {
+    margin-top: 2.5rem;
+  }
+  .chart-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+  .chart-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .chart-frame {
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .chart-frame iframe {
+    width: 100%;
+    border: none;
+    display: block;
+  }
+  .chart-source {
+    font-size: 0.68rem;
+    font-family: var(--font-body);
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 1 — THE DREAM ONCE WORKED
+  ════════════════════════════════════════════════════════════ */
+  #s1 { background: var(--paper); }
+
+  /* Eleanor snapshot card */
+  .snapshot-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 3rem;
+    margin-bottom: 2rem;
+  }
+  .snapshot-cell {
+    background: var(--surface);
+    padding: 1.5rem 1.25rem;
+  }
+  .snapshot-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .snapshot-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--blue);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+    display: block;
+  }
+  .snapshot-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .snapshot-caption {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-style: italic;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--grid);
+    margin-top: 0.5rem;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 2 — THE TWO INFLATIONS
+  ════════════════════════════════════════════════════════════ */
+  #s2 { background: var(--paper); border-top: 1px solid var(--border); }
+
+  /* Want vs Need split card */
+  .want-need-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-top: 2.5rem;
+  }
+  .want-card { background: var(--surface); padding: 2rem; }
+  .want-card h4 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid;
+  }
+  .want-card--cheaper h4 { border-color: var(--green); color: var(--green); }
+  .want-card--expensive h4 { border-color: var(--red); color: var(--red); }
+  .want-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .want-list li {
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--text-muted);
+  }
+  .want-list li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .want-card--cheaper  .want-list li::before { background: var(--green); }
+  .want-card--expensive .want-list li::before { background: var(--red); }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 3 — THE SPLIT
+  ════════════════════════════════════════════════════════════ */
+  #s3 { background: var(--ink); }
+  #s3 .chart-frame  { border-color: var(--border-dark); }
+  #s3 .chart-title  { color: var(--text-light); }
+  #s3 .chart-subtitle { color: rgba(245,240,232,0.45); }
+  #s3 .chart-source   { color: rgba(245,240,232,0.3); }
+
+  /* Pull quote */
+  .pull-quote {
+    border-left: 3px solid var(--gold);
+    padding: 1rem 1.5rem;
+    margin: 3rem 0;
+  }
+  .pull-quote p {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.45;
+    color: var(--text-light);
+  }
+  .pull-quote cite {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 4 — BUILDING A FAMILY
+  ════════════════════════════════════════════════════════════ */
+  #s4 { background: var(--paper); border-top: 1px solid var(--border); }
+
+  /* Tiffany vs Angela comparison panel */
+  .comparison-panel {
+    margin-top: 3.5rem;
+    border: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .comparison-header {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    background: var(--ink);
+    color: var(--text-light);
+  }
+  .comparison-header-cell {
+    padding: 1rem 1.25rem;
+    border-right: 1px solid var(--border-dark);
+  }
+  .comparison-header-cell:last-child { border-right: none; }
+  .comparison-header-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+  .comparison-header-desc {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.45);
+    font-weight: 400;
+  }
+  .comparison-row {
+    display: grid;
+    grid-template-columns: 200px 1fr 1fr;
+    border-top: 1px solid var(--grid);
+  }
+  .comparison-row:nth-child(odd)  .comparison-cell { background: var(--surface); }
+  .comparison-row:nth-child(even) .comparison-cell { background: var(--paper); }
+  .comparison-cell {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.88rem;
+    border-right: 1px solid var(--grid);
+  }
+  .comparison-cell:last-child { border-right: none; }
+  .comparison-cell--label {
+    font-weight: 600;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+  }
+  .comparison-cell--tiffany { color: var(--text); }
+  .comparison-cell--angela { color: var(--text); }
+  .cell-good    { color: var(--green);  font-weight: 600; }
+  .cell-warning { color: var(--orange); font-weight: 600; }
+  .cell-bad     { color: var(--red);    font-weight: 600; }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 5 — CALCULATOR
+  ════════════════════════════════════════════════════════════ */
+  #s5 {
+    background: #EDE8DC;
+    border-top: 1px solid var(--border);
+  }
+  .calculator-embed {
+    margin-top: 2.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    overflow: hidden;
+  }
+  .calculator-embed iframe {
+    width: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 6 — FERTILITY SQUEEZE
+  ════════════════════════════════════════════════════════════ */
+  #s6 { background: var(--paper); border-top: 1px solid var(--border); }
+
+  /* TFR stat card */
+  .stat-highlight {
+    display: inline-flex;
+    flex-direction: column;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    padding: 1.25rem 1.75rem;
+    margin-top: 2rem;
+  }
+  .stat-highlight-num {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+  .stat-highlight-label {
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+  .stat-highlight-note {
+    font-size: 0.72rem;
+    color: var(--gray-light);
+    margin-top: 0.3rem;
+  }
+
+  /* Causal note box */
+  .causal-note {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold);
+    padding: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .causal-note h4 {
+    font-family: var(--font-display);
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: var(--gold);
+  }
+  .causal-note p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.65;
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 7 — GEOGRAPHIC DIVIDE
+  ════════════════════════════════════════════════════════════ */
+  #s7 { background: var(--paper); border-top: 1px solid var(--border); }
+
+  /* ════════════════════════════════════════════════════════════
+     SECTION 8 — FINAL REVEAL
+  ════════════════════════════════════════════════════════════ */
+  #s8 {
+    background: var(--ink);
+    padding: 7rem 0;
+  }
+  .final-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border-dark);
+    border: 1px solid var(--border-dark);
+    margin: 3.5rem 0;
+  }
+  .final-era {
+    background: var(--surface-dark);
+    padding: 2.5rem 2rem;
+  }
+  .final-era-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-dark);
+  }
+  .era-label--1960s  { color: var(--blue-light); }
+  .era-label--1979   { color: var(--gold); }
+  .era-label--today  { color: var(--red-light); }
+
+  .final-era-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.25;
+  }
+  .final-era-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .final-era-points li {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.55;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .final-era-points li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--text-muted-dark);
+  }
+  .final-sentence {
+    max-width: 68ch;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .final-sentence p {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 2.5vw, 1.7rem);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.5;
+    color: rgba(245,240,232,0.75);
+  }
+  .final-sentence strong {
+    font-style: normal;
+    color: var(--gold);
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     METHODOLOGY / FOOTER
+  ════════════════════════════════════════════════════════════ */
+  #methodology {
+    background: var(--ink);
+    border-top: 1px solid var(--border-dark);
+    padding: 4rem 0;
+  }
+  .methodology-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 3rem;
+  }
+  .methodology-col h4 {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-light);
+    margin-bottom: 0.75rem;
+  }
+  .methodology-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .methodology-col li {
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.35);
+    line-height: 1.5;
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--border-dark);
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .footer-bottom p {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.2);
+    font-family: var(--font-body);
+  }
+
+  /* ════════════════════════════════════════════════════════════
+     SCROLL ANIMATIONS
+  ════════════════════════════════════════════════════════════ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(28px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ════════════════════════════════════════════════════════════
+     RESPONSIVE
+  ════════════════════════════════════════════════════════════ */
+  @media (max-width: 900px) {
+    .character-grid    { grid-template-columns: 1fr; }
+    .final-grid        { grid-template-columns: 1fr; }
+    .methodology-grid  { grid-template-columns: 1fr; }
+    .snapshot-card     { grid-template-columns: 1fr 1fr; }
+    .want-need-grid    { grid-template-columns: 1fr; }
+    .comparison-header { grid-template-columns: 140px 1fr 1fr; }
+    .comparison-row    { grid-template-columns: 140px 1fr 1fr; }
+    .nav-links         { display: none; }
+  }
+  @media (max-width: 600px) {
+    .snapshot-card  { grid-template-columns: 1fr; }
+    .comparison-header,
+    .comparison-row { grid-template-columns: 1fr; }
+    .comparison-header-cell { border-right: none; border-bottom: 1px solid var(--border-dark); }
+    .comparison-cell { border-right: none; }
+    .slide-content  { padding: 0 1.5rem; }
+    .carousel-dots  { left: 1.5rem; }
+    .scroll-cue     { display: none; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     NAV
+════════════════════════════════════════════════════════════ -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-logo">Can America Afford a Family?</div>
+  <ul class="nav-links">
+    <li><a href="#s1">The Baseline</a></li>
+    <li><a href="#s2">Two Inflations</a></li>
+    <li><a href="#s3">The Split</a></li>
+    <li><a href="#s4">Family Costs</a></li>
+    <li><a href="#s5">Calculator</a></li>
+    <li><a href="#s6">Fertility</a></li>
+    <li><a href="#s7">Geography</a></li>
+    <li><a href="#s8">Conclusion</a></li>
+  </ul>
+  <div class="nav-progress" id="navProgress" role="progressbar" aria-label="Reading progress"></div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 0 — COLD OPEN / CAROUSEL
+════════════════════════════════════════════════════════════ -->
+<section id="cold-open" aria-label="News headline carousel">
+  <ul class="carousel-slides" id="carouselSlides" role="list">
+
+<!-- Slide 1 — CORRECT relative path -->
+<li class="carousel-slide active" role="listitem">
+  <div class="slide-bg" style="background-image:url('images/rankings.png')"></div>
+  <div class="slide-content">
+    <div class="slide-kicker">United States · 2024</div>
+    <h2 class="slide-headline">U.S. fertility rate<br>hits historic low</h2>
+    <p class="slide-sub">1.60 births per woman — the lowest ever recorded.</p>
+  </div>
+</li>
+
+<!-- Slide 2 -->
+<li class="carousel-slide" role="listitem">
+  <div class="slide-bg" style="background-image:url('images/slide2.png')"></div>
+  <div class="slide-content">
+    <div class="slide-kicker">Housing · 2024</div>
+    <h2 class="slide-headline">Home prices reach<br>record highs</h2>
+    <p class="slide-sub">The median home now costs 4–5× the median family income.</p>
+  </div>
+</li>
+
+<!-- Slide 3 -->
+<li class="carousel-slide" role="listitem">
+  <div class="slide-bg" style="background-image:url('images/slide3.png')"></div>
+  <div class="slide-content">
+    <div class="slide-kicker">Childcare · 2022</div>
+    <h2 class="slide-headline">Childcare costs now<br>exceed rent in most states</h2>
+    <p class="slide-sub">The national median for infant center-based care: $9,025 per year.</p>
+  </div>
+</li>
+
+<!-- Slide 4 -->
+<li class="carousel-slide" role="listitem">
+  <div class="slide-bg" style="background-image:url('images/slide4.png')"></div>
+  <div class="slide-content">
+    <div class="slide-kicker">Wages · Since 1979</div>
+    <h2 class="slide-headline">Top earners pull<br>further ahead</h2>
+    <p class="slide-sub">Top 1% wages up 182% since 1979. Bottom 90%: up 44%.</p>
+  </div>
+</li>
+
+<!-- Slide 5 -->
+<li class="carousel-slide" role="listitem">
+  <div class="slide-bg" style="background-image:url('images/slide5.png')"></div>
+  <div class="slide-content">
+    <div class="slide-kicker">Family costs · 2024</div>
+    <h2 class="slide-headline">The cost of raising<br>a child reaches $310,000</h2>
+    <p class="slide-sub">USDA estimate for a middle-income family.</p>
+  </div>
+</li>
+
+  </ul>
+
+  <!-- Dot navigation -->
+  <div class="carousel-dots" role="tablist" aria-label="Slide navigation">
+    <button class="carousel-dot active" data-slide="0" role="tab" aria-selected="true"  aria-label="Slide 1"></button>
+    <button class="carousel-dot"        data-slide="1" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+    <button class="carousel-dot"        data-slide="2" role="tab" aria-selected="false" aria-label="Slide 3"></button>
+    <button class="carousel-dot"        data-slide="3" role="tab" aria-selected="false" aria-label="Slide 4"></button>
+    <button class="carousel-dot"        data-slide="4" role="tab" aria-selected="false" aria-label="Slide 5"></button>
+  </div>
+
+  <!-- Progress bar -->
+  <div class="carousel-progress">
+    <div class="carousel-progress-fill" id="carouselProgressFill"></div>
+  </div>
+
+  <!-- Scroll cue -->
+  <div class="scroll-cue" onclick="document.getElementById('characters').scrollIntoView({behavior:'smooth'})">
+    <span>Scroll</span>
+    <div class="scroll-cue-line"></div>
+  </div>
+
+</section>
+
+
+<section id="characters">
+  <div class="container">
+ 
+    <!-- Intro text -->
+    <div class="characters-intro reveal">
+      <p>
+        Behind every headline is a household.<br>
+        Meet <em>three women</em> whose lives tell the story<br>
+        of a changing American economy.
+      </p>
+    </div>
+ 
+    <!-- Photo slideshow -->
+    <div class="char-slideshow reveal">
+ 
+      <div class="char-slides" id="charSlides">
+ 
+        <!-- ── ELEANOR ──────────────────────────────────────── -->
+        <div class="char-slide active" id="charSlide-0">
+          <div class="char-photo-wrap">
+            <!--
+              TO ADD YOUR IMAGE:
+              Remove the placeholder div below and uncomment the <img> tag.
+              Put your photo in the images/ folder next to index.html.
+            -->
+            
+            <img src="images/eleanor.jpg"
+                 alt="Eleanor, a woman in her late twenties, 1965"
+                 class="char-photo">
+          </div>
+ 
+          <div class="char-caption">
+            <div class="char-caption-name char-caption-name--eleanor">Eleanor</div>
+            <div class="char-caption-era">1965 &nbsp;·&nbsp; The Baseline</div>
+            <p class="char-caption-desc">
+              Age 29. Median-income household. Her husband works full time so
+              she stays home with their two children. The family owns their home
+              at 3.4× their annual income.
+            </p>
+          </div>
+        </div>
+ 
+        <!-- ── TIFFANY ──────────────────────────────────────── -->
+        <div class="char-slide" id="charSlide-1">
+          <div class="char-photo-wrap">
+            
+            <img src="images/tiffany.jpg"
+                 alt="Tiffany, a woman in her late twenties today"
+                 class="char-photo">
+            
+          </div>
+ 
+          <div class="char-caption">
+            <div class="char-caption-name char-caption-name--tiffany">Tiffany</div>
+            <div class="char-caption-era">Today &nbsp;·&nbsp; Median America</div>
+            <p class="char-caption-desc">
+              Age 29. Works full time at a median income of around $57,000.
+              She rents — a home costs more than 4.5× her annual income.
+              Infant childcare alone runs $9,025 a year: 21% of what she earns.
+              She wants a home and two children. The math keeps not working out.
+            </p>
+          </div>
+        </div>
+ 
+        <!-- ── DESTINY ──────────────────────────────────────── -->
+        <div class="char-slide" id="charSlide-2">
+          <div class="char-photo-wrap">
+            
+            <img src="images/destiny.jpg"
+                 alt="Destiny, a woman in her mid-thirties today"
+                 class="char-photo">
+          </div>
+ 
+          <div class="char-caption">
+            <div class="char-caption-name char-caption-name--destiny">Destiny</div>
+            <div class="char-caption-era">Today &nbsp;·&nbsp; Top 20%</div>
+            <p class="char-caption-desc">
+              Age 34. Earns $113,000 — top quintile. She owns her home
+              and is building equity. The same $9,025 in childcare costs
+              Tiffany 21% of her income; it costs Destiny 8%.
+              Same costs. Different math. The dream is still possible —
+              but only from where she is standing.
+            </p>
+          </div>
+        </div>
+ 
+      </div><!-- end char-slides -->
+ 
+      <!-- Arrows -->
+      <button class="char-arrow char-arrow--prev"
+              id="charPrev"
+              aria-label="Previous character">&#8592;</button>
+      <button class="char-arrow char-arrow--next"
+              id="charNext"
+              aria-label="Next character">&#8594;</button>
+ 
+      <!-- Dots -->
+      <div class="char-dots" role="tablist" aria-label="Character navigation">
+        <button class="char-dot active" data-char="0"
+                role="tab" aria-selected="true"  aria-label="Eleanor"></button>
+        <button class="char-dot"        data-char="1"
+                role="tab" aria-selected="false" aria-label="Tiffany"></button>
+        <button class="char-dot"        data-char="2"
+                role="tab" aria-selected="false" aria-label="Destiny"></button>
+      </div>
+ 
+    </div><!-- end char-slideshow -->
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 1 — THE DREAM ONCE WORKED
+════════════════════════════════════════════════════════════ -->
+<section id="s1" class="section" aria-labelledby="s1-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="eyebrow eyebrow--muted">1953–1973</span>
+      <h2 id="s1-heading">The dream once worked</h2>
+      <p>The American Dream was never equally available to everyone. But for a broad middle class, income growth, housing affordability, and family formation were more aligned than at any point since.</p>
+    </div>
+
+    <!-- Eleanor snapshot — 1965 -->
+    <div class="reveal">
+      <p style="font-size:2.0rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:0.5rem;">Eleanor's household · 1965 · In 2023 real dollars</p>
+      <div class="snapshot-card">
+        <div class="snapshot-cell">
+          <span class="snapshot-label">Annual income</span>
+          <span class="snapshot-value">$52,000</span>
+          <span class="snapshot-note">Median family income (2023$)</span>
+        </div>
+        <div class="snapshot-cell">
+          <span class="snapshot-label">Home price ÷ income</span>
+          <span class="snapshot-value">3.4×</span>
+          <span class="snapshot-note">Years of income to buy median home</span>
+        </div>
+        <div class="snapshot-cell">
+          <span class="snapshot-label">Fertility rate</span>
+          <span class="snapshot-value">2.9</span>
+          <span class="snapshot-note">Above 2.1 replacement level</span>
+        </div>
+        <div class="snapshot-cell">
+          <span class="snapshot-label">Family cost burden</span>
+          <span class="snapshot-value">~15%</span>
+          <span class="snapshot-note">Cost of child as % of income/yr</span>
+        </div>
+      </div>
+      <p class="snapshot-caption">All nominal values in this narration was adjusted to 2023 dollars using CPIAUCSL. 2023 was selected as the base year as it represents the most recent year for which all primary datasets (income, wages, housing) have complete annual observations.</p>
+    </div>
+
+    <!-- Chart 1: Real Median Family Income -->
+    <div class="chart-block reveal">
+      <div class="chart-title">The Shared Boom Was Real - Income nearly doubled in a generation then it slowed down </div>
+      <div class="chart-subtitle">Between 1953 and 1973, real median family income grew 74% in just 20 years so roughly 3% per year. A family at the middle of the income distribution could expect to be meaningfully better off than their parents. Eleanor's household was part of that story.
+Then growth slowed. Between 1973 and 2023, a full 50 years, real median family income grew just 45%. Less growth which was spread over more than twice as long. The line kept rising, but the pace of the promise changed.
+
+    </div>
+      <div class="chart-frame">
+        <!-- REPLACE with your actual figure: -->
+        <iframe src="outputs/act1/act1_fig2_shared_boom.html" height="480" title="Shared Boom chart"></iframe>
+        <!-- PLACEHOLDER shown until file is in place: -->
+      </div>
+      <p class="chart-source">Source: U.S. Census Bureau via FRED · MEFAINUSA672N · Shaded bands = NBER recessions</p>
+    </div>
+
+    <!-- Chart 2: Housing affordability -->
+    <div class="chart-block reveal">
+      <div class="chart-title">A Home Cost 3× Your Income, Not 5×</div>
+      <div class="chart-subtitle">Median home price ÷ median family income · 1963–2025 · Affordable range historically ≤ 3×</div>
+      <div class="chart-frame">
+        <iframe src="outputs/act1/act1_fig4_housing.html" height="560" title="Housing affordability chart"></iframe>
+      </div>
+      <p class="chart-source">Source: FRED · MSPUS (median home price) · MEFAINUSA672N (income, deflated to nominal)</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 2 — THE TWO INFLATIONS
+════════════════════════════════════════════════════════════ -->
+<section id="s2" class="section" aria-labelledby="s2-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="eyebrow eyebrow--muted">Section 02 · 1967–2025</span>
+      <h2 id="s2-heading">The economy split in two</h2>
+      <p>America became dramatically cheaper for things you buy <em>after</em> the dream — TVs, clothes, consumer goods. But it became far more expensive for the things you need to <em>start</em> the dream: housing, healthcare, childcare, education.</p>
+    </div>
+
+    <!-- Hero chart — full width -->
+    <div class="chart-block reveal">
+      <div class="chart-title">The Two Inflations</div>
+      <div class="chart-subtitle">All categories indexed to 100 in 1967 · Red lines rose faster than wages · Green lines fell · Wages = thick dark reference line</div>
+      <div class="chart-frame">
+        <iframe src="outputs/act1/act1_fig1_two_inflations.html" height="580" title="Two inflations chart"></iframe>
+      </div>
+      <p class="chart-source">Source: Bureau of Labor Statistics via FRED · Multiple CPI sub-indexes · AHETPI (average hourly earnings)</p>
+    </div>
+
+    <!-- Want vs Need split card -->
+    <div class="want-need-grid reveal">
+      <div class="want-card want-card--cheaper">
+        <h4>Things that got cheaper</h4>
+        <ul class="want-list">
+          <li>Apparel &amp; clothing</li>
+          <li>Consumer electronics (TVs, computers)</li>
+          <li>Toys &amp; recreation</li>
+          <li>Food at home</li>
+          <li>Transportation goods</li>
+        </ul>
+      </div>
+      <div class="want-card want-card--expensive">
+        <h4>Things that exploded</h4>
+        <ul class="want-list">
+          <li>Hospital services — up 14.2× since 1967</li>
+          <li>Medical care — up faster than wages since 1960</li>
+          <li>Shelter &amp; housing — index at 1,393 (1967=100)</li>
+          <li>Tuition &amp; childcare — up 14.9× since 1978</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 3 — THE SPLIT: WHO BENEFITED?
+════════════════════════════════════════════════════════════ -->
+<section id="s3" class="section section--dark" aria-labelledby="s3-heading">
+  <div class="container">
+
+    <div class="section-header section-header--light reveal">
+      <span class="eyebrow">Section 03 · 1979–2023</span>
+      <h2 id="s3-heading">The economy kept growing.<br>Not everyone kept up.</h2>
+      <p class="lead lead--light">The gains from economic growth since 1979 have been deeply unequal. Tiffany's paycheck did not grow the way Angela's did — and neither of them grew the way the top 0.1% did.</p>
+    </div>
+
+    <div class="pull-quote reveal">
+      <p>"The top 1% saw wages rise 182% since 1979. The bottom 90% saw 44% — over 44 years, that is less than 1% per year."</p>
+      <cite>Economic Policy Institute analysis of Social Security Administration wage data</cite>
+    </div>
+
+    <!-- Chart: Wage growth indexed -->
+    <div class="chart-block reveal">
+      <div class="chart-title">The Paycheck Lottery Since 1979</div>
+      <div class="chart-subtitle">Real annual wages indexed to 100 in 1979 · All groups start at the same point · Click legend to isolate</div>
+      <div class="chart-frame" style="border-color:var(--border-dark)">
+        <iframe src="outputs/act2/act2_fig1_wage_growth_indexed.html" height="520" title="Wage growth chart"></iframe>
+      </div>
+      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: Economic Policy Institute analysis of SSA data · epi_annual_wages.csv · Real 2023 dollars</p>
+    </div>
+
+    <!-- Chart: Growth scorecard -->
+    <div class="chart-block reveal">
+      <div class="chart-title">The Growth Scorecard</div>
+      <div class="chart-subtitle">Cumulative real wage growth since 1979 by income group</div>
+      <div class="chart-frame" style="border-color:var(--border-dark)">
+        <iframe src="outputs/act2/act2_fig5_growth_scorecard.html" height="480" title="Growth scorecard chart"></iframe>
+      </div>
+      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: EPI · epi_annual_wages.csv · 1979–2023</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 4 — BUILDING A FAMILY
+════════════════════════════════════════════════════════════ -->
+<section id="s4" class="section" aria-labelledby="s4-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="eyebrow eyebrow--muted">Section 04 · The human cost</span>
+      <h2 id="s4-heading">What it costs to start a family</h2>
+      <p>The abstract becomes personal when you follow the actual costs — from the delivery room to the first day of college. For Tiffany and Destiny, the goal is the same. The math is not.</p>
+    </div>
+
+    <!-- Tiffany vs Angela comparison panel -->
+    <div class="chart-block reveal">
+      <h3 style="font-family:var(--font-display);font-size:1.2rem;font-weight:700;margin-bottom:0.5rem;">Same goal. Different math.</h3>
+      <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.5rem;">Both Tiffany and Angela want the same thing: a home and two children. Here is what that looks like on their respective balance sheets.</p>
+
+      <div class="comparison-panel">
+        <div class="comparison-header">
+          <div class="comparison-header-cell">
+            <div class="comparison-header-name" style="font-size:0.8rem;color:rgba(245,240,232,0.4)">Category</div>
+          </div>
+          <div class="comparison-header-cell">
+            <div class="comparison-header-name">Tiffany</div>
+            <div class="comparison-header-desc">Median income · Renter · 2 kids</div>
+          </div>
+          <div class="comparison-header-cell">
+            <div class="comparison-header-name">Angela</div>
+            <div class="comparison-header-desc">Top 20% income · Owner · 2 kids</div>
+          </div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Annual income</div>
+          <div class="comparison-cell comparison-cell--tiffany">~$57,000</div>
+          <div class="comparison-cell comparison-cell--angela">~$113,000+</div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Housing</div>
+          <div class="comparison-cell"><span class="cell-warning">Renter — 33% of income</span></div>
+          <div class="comparison-cell"><span class="cell-good">Owner — building equity</span></div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Infant childcare (1 yr)</div>
+          <div class="comparison-cell"><span class="cell-bad">$9,025 — 21% of income</span></div>
+          <div class="comparison-cell"><span class="cell-good">$9,025 — 8% of income</span></div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Healthcare</div>
+          <div class="comparison-cell"><span class="cell-warning">9% of income</span></div>
+          <div class="comparison-cell"><span class="cell-good">7% of income</span></div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Necessities total</div>
+          <div class="comparison-cell"><span class="cell-bad">~82% of income</span></div>
+          <div class="comparison-cell"><span class="cell-warning">~55% of income</span></div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Discretionary income</div>
+          <div class="comparison-cell"><span class="cell-bad">~18% — savings, emergencies</span></div>
+          <div class="comparison-cell"><span class="cell-good">~45% — remains viable</span></div>
+        </div>
+        <div class="comparison-row">
+          <div class="comparison-cell comparison-cell--label">Path to homeownership</div>
+          <div class="comparison-cell"><span class="cell-bad">Blocked by price-to-income gap</span></div>
+          <div class="comparison-cell"><span class="cell-good">Already there</span></div>
+        </div>
+        <div class="comparison-row" style="background:var(--surface)">
+          <div class="comparison-cell comparison-cell--label" style="font-weight:700;">Outcome</div>
+          <div class="comparison-cell"><span class="cell-bad" style="font-size:0.92rem;">Delay or compromise</span></div>
+          <div class="comparison-cell"><span class="cell-good" style="font-size:0.92rem;">Dream remains possible</span></div>
+        </div>
+      </div>
+
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">Note: Budget shares from BLS Consumer Expenditure Survey historical data · DOL NDCP 2022 (childcare) · All values approximate for illustrative purposes</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 5 — THE CALCULATOR
+════════════════════════════════════════════════════════════ -->
+<section id="s5" aria-labelledby="s5-heading">
+  <div class="container">
+
+    <div class="section-header section-header--centered reveal" style="padding-top:6rem;">
+      <span class="eyebrow eyebrow--muted">Section 05 · Interactive</span>
+      <h2 id="s5-heading">Where do you land?</h2>
+      <p style="margin:0 auto;">Tiffany and Angela are illustrations. Your situation is specific. Select your income group, region, housing status, and family size — and see what your household budget would have looked like in 1960 versus today.</p>
+    </div>
+
+    <div class="calculator-embed reveal" style="margin-bottom:6rem;">
+      <iframe src="outputs/calculator.html" height="820" title="Household budget calculator" scrolling="yes"></iframe>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 6 — THE FERTILITY SQUEEZE
+════════════════════════════════════════════════════════════ -->
+<section id="s6" class="section" aria-labelledby="s6-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="eyebrow eyebrow--muted">Section 06 · The data behind the headlines</span>
+      <h2 id="s6-heading">The fertility squeeze</h2>
+      <p>Fertility decline has many causes — cultural, medical, social. But the economic environment shapes when and whether people form families. The data shows a consistent relationship between rising housing costs and falling birth rates.</p>
+    </div>
+
+    <!-- TFR stat highlight -->
+    <div class="reveal">
+      <div class="stat-highlight">
+        <span class="stat-highlight-num">1.60</span>
+        <span class="stat-highlight-label">U.S. Total Fertility Rate · 2024</span>
+        <span class="stat-highlight-note">Record low · Well below 2.1 replacement level</span>
+      </div>
+    </div>
+
+    <!-- Chart: Housing-Fertility Nexus -->
+    <div class="chart-block reveal">
+      <div class="chart-title">The Housing-Fertility Nexus</div>
+      <div class="chart-subtitle">Total Fertility Rate (left axis) vs. Shelter CPI index 1967=100 (right axis) · Shaded bands = housing surge periods</div>
+      <div class="chart-frame">
+        <iframe src="outputs/act3/act3_fig3_fertility_housing.html" height="520" title="Housing fertility nexus chart"></iframe>
+      </div>
+      <p class="chart-source">Sources: World Bank/CDC via FRED (SPDYNTFRTINUSA) · BLS via FRED (CUSR0000SAH1) · Couillard (2024), Univ. of Toronto</p>
+    </div>
+
+    <!-- Causal note -->
+    <div class="causal-note reveal">
+      <h4>A note on causation</h4>
+      <p>The correlation between housing costs and fertility decline is strong and consistent — but causation is harder to establish. Couillard (2024) estimates rising housing costs explain approximately 51% of the fertility decline between the 2000s and 2010s using a structural model. Natural-experiment evidence (van Doornik et al., CEPR 2024) finds causal evidence for the housing-fertility link in other countries. This analysis presents the relationship honestly: the data supports a causal role for costs, but fertility is shaped by many forces simultaneously.</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 7 — THE GEOGRAPHIC DIVIDE
+════════════════════════════════════════════════════════════ -->
+<section id="s7" class="section" aria-labelledby="s7-heading">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <span class="eyebrow eyebrow--muted">Section 07 · Geography matters</span>
+      <h2 id="s7-heading">Where Tiffany lives<br>changes everything</h2>
+      <p>The national median conceals enormous geographic variation. A Tiffany in Mississippi faces a fundamentally different affordability picture than a Tiffany in Massachusetts. The state map reveals where the squeeze is most severe.</p>
+    </div>
+
+
+    <!-- Chart: Two Americas -->
+    <div class="chart-block reveal">
+      <div class="chart-title">Two Americas: 2008 vs. 2022</div>
+      <div class="chart-subtitle">The same map — 14 years apart · Identical color scale · The spread of red is the finding</div>
+      <div class="chart-frame">
+        <iframe src="outputs/act4/act4_fig4_two_americas.html" height="420" title="Two Americas comparison map"></iframe>
+      </div>
+      <p class="chart-source">Source: DOL NDCP · 2008 and 2022 · Identical color scale enables direct comparison</p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SECTION 8 — FINAL REVEAL
+════════════════════════════════════════════════════════════ -->
+<section id="s8" aria-labelledby="s8-heading">
+  <div class="container">
+
+    <div class="section-header section-header--centered section-header--light reveal" style="padding-top:7rem;">
+      <span class="eyebrow">Conclusion</span>
+      <h2 id="s8-heading">The American Dream<br>didn't disappear.</h2>
+    </div>
+
+    <div class="final-grid reveal">
+
+      <!-- Era 1 -->
+      <div class="final-era">
+        <div class="final-era-label era-label--1960s">1953–1973 · Eleanor's world</div>
+        <div class="final-era-title">Broadly shared prosperity</div>
+        <ul class="final-era-points">
+          <li>Real median family income nearly doubled in 20 years</li>
+          <li>Median home cost ~3.4× annual income</li>
+          <li>Fertility above replacement — families were financially feasible</li>
+          <li>Childcare not a budget line — single earner could support a family</li>
+          <li>Bottom 90% held 70% of all wages</li>
+        </ul>
+      </div>
+
+      <!-- Era 2 -->
+      <div class="final-era">
+        <div class="final-era-label era-label--1979">1979–2000 · The structural break</div>
+        <div class="final-era-title">Growth continues,<br>divergence begins</div>
+        <ul class="final-era-points">
+          <li>Top 1% wages begin to separate sharply from the rest</li>
+          <li>College tuition rises 14.9× in real terms since 1978</li>
+          <li>Hospital services diverge from general inflation</li>
+          <li>Gini coefficient rises — inequality now measurable in every decade</li>
+          <li>Women enter workforce — childcare becomes a real cost</li>
+        </ul>
+      </div>
+
+      <!-- Era 3 -->
+      <div class="final-era">
+        <div class="final-era-label era-label--today">2000–Present · Tiffany's world</div>
+        <div class="final-era-title">The dream segmented</div>
+        <ul class="final-era-points">
+          <li>Median home now costs 4–5× income — out of reach for Tiffany</li>
+          <li>Infant childcare median: $9,025/yr — 21% of Tiffany's income</li>
+          <li>Fertility hits record low of 1.60 in 2024</li>
+          <li>88% of counties exceed the 7% HHS childcare affordability threshold</li>
+          <li>The dream survives — but only above a certain income threshold</li>
+        </ul>
+      </div>
+
+    </div><!-- end final-grid -->
+
+    <div class="final-sentence reveal" style="padding-bottom:7rem;">
+      <p>
+        Tiffany's story is not about one woman.
+        It is about how a once-broad economic promise became
+        <strong>conditional on income, assets, and timing</strong> —
+        and what the data shows when you follow the numbers
+        from Eleanor's world to hers.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     METHODOLOGY & FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer id="methodology" role="contentinfo">
+  <div class="container">
+
+    <div class="methodology-grid">
+      <div class="methodology-col">
+        <h4>Data Sources</h4>
+        <ul>
+          <li>Federal Reserve Economic Data (FRED)</li>
+          <li>Bureau of Labor Statistics — CPI &amp; CE Survey</li>
+          <li>Economic Policy Institute — Wage Data</li>
+          <li>U.S. Census Bureau — Income &amp; Gini</li>
+          <li>CDC / NCHS — Vital Statistics</li>
+          <li>Dept. of Labor — NDCP Childcare Prices</li>
+          <li>USDA — Expenditures on Children</li>
+          <li>World Bank — Fertility Rate Series</li>
+        </ul>
+      </div>
+      <div class="methodology-col">
+        <h4>Methodology Notes</h4>
+        <ul>
+          <li>All nominal values adjusted using CPIAUCSL</li>
+          <li>Income figures in 2023 real dollars unless noted</li>
+          <li>TFR is a period measure — see technical appendix</li>
+          <li>Childcare weekly costs × 52 = annual (DOL NDCP)</li>
+          <li>Price-to-income: nominal home price ÷ nominal income</li>
+          <li>Wage percentiles from EPI/SSA analysis, 1979–2023</li>
+          <li>Budget shares from BLS CE Survey + USDA historical</li>
+        </ul>
+      </div>
+      <div class="methodology-col">
+        <h4>Key Research</h4>
+        <ul>
+          <li>Couillard (2024) — housing &amp; fertility, Univ. of Toronto</li>
+          <li>Dettling &amp; Kearney (2014) — NBER w20208</li>
+          <li>Lovenheim &amp; Mumford (2013) — NBER w17485</li>
+          <li>van Doornik et al. (2024) — CEPR housing &amp; fertility</li>
+          <li>Pew Research Center — marriage &amp; family surveys</li>
+          <li>BYU American Family Survey 2025</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>The Diverging American Dream · Data Visualization Project · 2025</p>
+      <p>Built with Plotly · D3.js · HTML/CSS/JS · Data from FRED, BLS, EPI, CDC, DOL</p>
+    </div>
+
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════════ -->
+<script>
+/* ── NAV PROGRESS BAR ─────────────────────────────────────── */
+window.addEventListener('scroll', () => {
+  const scrolled  = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const pct       = docHeight > 0 ? (scrolled / docHeight) * 100 : 0;
+  document.getElementById('navProgress').style.width = pct + '%';
+});
+
+
+/* ── CAROUSEL ─────────────────────────────────────────────── */
+(function () {
+  const slides   = document.querySelectorAll('.carousel-slide');
+  const dots     = document.querySelectorAll('.carousel-dot');
+  const fillBar  = document.getElementById('carouselProgressFill');
+  let   current  = 0;
+  let   timer    = null;
+  let   progTimer= null;
+  const INTERVAL = 3000;
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    dots[current].setAttribute('aria-selected', 'false');
+
+    current = (n + slides.length) % slides.length;
+
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    dots[current].setAttribute('aria-selected', 'true');
+
+    // Reset and restart progress bar
+    fillBar.style.transition = 'none';
+    fillBar.style.width = '0%';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        fillBar.style.transition = 'width ' + INTERVAL + 'ms linear';
+        fillBar.style.width = '100%';
+      });
+    });
+  }
+
+  function next() { goTo(current + 1); }
+
+  function startAuto() {
+    stopAuto();
+    timer = setInterval(next, INTERVAL);
+  }
+  function stopAuto() {
+    clearInterval(timer);
+  }
+
+  // Dot clicks
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => {
+      goTo(i);
+      startAuto();
+    });
+  });
+
+  // Pause on hover
+  const carousel = document.getElementById('cold-open');
+  carousel.addEventListener('mouseenter', stopAuto);
+  carousel.addEventListener('mouseleave', startAuto);
+
+  // Keyboard
+  carousel.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') { goTo(current + 1); startAuto(); }
+    if (e.key === 'ArrowLeft')  { goTo(current - 1); startAuto(); }
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  carousel.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  carousel.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) {
+      goTo(diff > 0 ? current + 1 : current - 1);
+      startAuto();
+    }
+  });
+
+  // Init
+  goTo(0);
+  startAuto();
+})();
+
+
+/* ── SCROLL REVEAL ────────────────────────────────────────── */
+(function () {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+
+/* ── IFRAME AUTO-HEIGHT ───────────────────────────────────── */
+// Resize iframes to fit their content after load
+document.querySelectorAll('iframe').forEach(frame => {
+  frame.addEventListener('load', function () {
+    try {
+      const body = this.contentDocument.body;
+      if (body) {
+        const h = body.scrollHeight;
+        if (h > 100) this.style.height = h + 'px';
+      }
+    } catch(e) {
+      // Cross-origin frames will silently fail — height set via HTML attribute
+    }
+  });
+});
+
+(function () {
+  const slides  = document.querySelectorAll('.char-slide');
+  const dots    = document.querySelectorAll('.char-dot');
+  const btnPrev = document.getElementById('charPrev');
+  const btnNext = document.getElementById('charNext');
+  if (!slides.length) return;   // guard if section not present
+  let current = 0;
+ 
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    dots[current].setAttribute('aria-selected', 'false');
+ 
+    current = (n + slides.length) % slides.length;
+ 
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    dots[current].setAttribute('aria-selected', 'true');
+  }
+ 
+  btnPrev.addEventListener('click', () => goTo(current - 1));
+  btnNext.addEventListener('click', () => goTo(current + 1));
+ 
+  dots.forEach((dot, i) => {
+    dot.addEventListener('click', () => goTo(i));
+  });
+ 
+  // Touch swipe
+  let touchStartX = 0;
+  const slideshow = document.querySelector('.char-slideshow');
+  slideshow.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  slideshow.addEventListener('touchend', e => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+  });
+ 
+  // Keyboard
+  slideshow.setAttribute('tabindex', '0');
+  slideshow.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') goTo(current + 1);
+    if (e.key === 'ArrowLeft')  goTo(current - 1);
+  });
+})();
+
+</script>
+
+  <div style="text-align: center; margin: 2rem 0 5rem 0; display: flex; justify-content: center; gap: 2rem;">
+    <a href="llm-usage-log.pdf" target="_blank"
+      style="color: var(--primary); font-size: 1.1rem; text-decoration: none; border-bottom: 1px solid var(--primary);">
+      LLM Usage Log →
+    </a>
+  </div>
+
+</body>
+</html>
