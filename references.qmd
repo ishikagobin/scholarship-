@@ -1,0 +1,36 @@
+---
+title: "References"
+format: pdf
+---
+
+These are the data sources, reports, and reference materials used throughout. 
+
+## Data Sources
+
+- Federal Reserve Economic Data (FRED). *Federal Reserve Bank of St. Louis.*  
+  https://fred.stlouisfed.org/
+
+- National Database of Childcare Prices. *U.S. Department of Labor / Child Care Aware of America.*  
+  https://www.childcarecost.org/
+
+- U.S. Census Bureau. *Historical Income Tables.*  
+  https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html
+
+- Bureau of Labor Statistics. *Consumer Price Index & Consumer Expenditure Survey.*  
+  https://www.bls.gov/
+
+- Economic Policy Institute. *State of Working America Wage Data.*  
+  https://www.epi.org/
+
+---
+
+## Research & Reports
+
+- [Build, Baby, Build (Terner Center / Housing affordability report)](https://ti.org/pdfs/BuildBabyBuild.pdf)
+
+
+
+
+
+
+
