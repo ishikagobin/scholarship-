@@ -16,8 +16,7 @@ These are the data sources, reports, and reference materials used throughout.
 - U.S. Census Bureau. *Historical Income Tables.*  
   https://www.census.gov/data/tables/time-series/demo/income-poverty/historical-income-households.html
 
-- Bureau of Labor Statistics. *Consumer Price Index & Consumer Expenditure Survey.*  
-  https://www.bls.gov/
+- [Bureau of Labor Statistics — Consumer Expenditure Survey (CE) Household Spending Profiles](https://www.bls.gov/cex/cecomparison/ce_profile.htm)
 
 - Economic Policy Institute. *State of Working America Wage Data.*  
   https://www.epi.org/
@@ -25,6 +24,10 @@ These are the data sources, reports, and reference materials used throughout.
 ---
 
 ## Research & Reports
+
+- [World Economic Forum — Charted: Here’s how US goods and services have changed in price since 2000](https://www.weforum.org/stories/2023/02/charted-heres-how-us-goods-and-services-have-changed-in-price-since-2000/)
+
+- [Economic Policy Institute — America's Slow-Motion Wage Crisis: Four Decades of Slow and Unequal Growth](https://www.epi.org/publication/americas-slow-motion-wage-crisis-four-decades-of-slow-and-unequal-growth-2/)
 
 - [Build, Baby, Build (Terner Center / Housing affordability report)](https://ti.org/pdfs/BuildBabyBuild.pdf)
 
