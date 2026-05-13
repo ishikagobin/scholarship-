@@ -1185,7 +1185,9 @@
   <div class="container">
 
    <div class="section-header reveal">
-  <h2 id="s1-heading">Disclaimer</h2>
+  <h2 id="s1-heading">A note on the data</h2>
+  <p>All dollar values throughout this project are expressed in <strong>2023 real dollars</strong> unless otherwise noted. 2023 was selected as the base year because it is the most recent year for which all primary datasets, income, wages, housing and childcare have complete annual observations. Some visualizations reference 2022 or 2024 where a specific data source's most recent complete year differs. This is noted in more detail in each chart's source line.</p>
+  <h3 style="font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.5rem;">Gray shaded bands are recessions</h3>
   <p>The shaded areas in the following plots represent periods of economic recession as defined by the National Bureau of Economic Research (NBER). A recession is described as the official period where the U.S. economy has contracted: GDP shrinks and unemployment typically rises. Each shaded band starts at the month the recession began and ends when it officially concluded</p>
   <ul style="margin-top: 0.75rem; padding-left: 1.5rem; line-height: 1.9; color: var(--text-muted);">
     <li><strong>Early 1960's:</strong> Post-Korean War slowdown</li>
@@ -1315,7 +1317,7 @@
 
     <!-- Causal note -->
     <div class="causal-note reveal">
-      <h4>Shared Boom Era</h4>
+      <h4>Takeaway</h4>
       <p>Between 1953 and 1973, real median family income grew 74% in just 20 years so roughly 3% per year. A family at the middle of the income distribution could expect to be meaningfully better off than their parents. Eleanor's household was part of that story.
 Then growth slowed. Between 1973 and 2023, a full 50 years, real median family income grew just 45%. Less growth which was spread over more than twice as long. The line kept rising, but the pace of the promise changed.</p>
     </div>
@@ -1595,6 +1597,16 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
       <p>The abstract becomes personal when you follow the actual costs — from the delivery room to the first day of college. For Tiffany and Destiny, the goal is the same. The math is not.</p>
     </div>
 
+    <!-- Chart: Growth scorecard -->
+    <div class="chart-block reveal">
+      <div class="chart-title">The Growth Scorecard</div>
+      <div class="chart-subtitle">Cumulative real wage growth since 1979 by income group</div>
+      <div class="chart-frame" style="border-color:var(--border-dark)">
+        <iframe src="outputs/act3/act3_fig2_cost_of_child.html" height="480" title="Growth scorecard chart"></iframe>
+      </div>
+      <p class="chart-source" style="color:rgba(245,240,232,0.3)">Source: Economic Policy Institute analysis of SSA data</p>
+    </div>
+
 <script>
 (function () {
   const el = document.getElementById('s4-heading');
@@ -1638,6 +1650,12 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
   observer.observe(el);
 })();
 </script>
+
+        <!-- Causal note -->
+    <div class="causal-note reveal">
+      <h4>Takeaway</h4>
+      <p>The correlation between housing costs and fertility decline is strong and consistent — but causation is harder to establish. Couillard (2024) estimates rising housing costs explain approximately 51% of the fertility decline between the 2000s and 2010s using a structural model. Natural-experiment evidence (van Doornik et al., CEPR 2024) finds causal evidence for the housing-fertility link in other countries. This analysis presents the relationship honestly: the data supports a causal role for costs, but fertility is shaped by many forces simultaneously.</p>
+    </div>
 
     <!-- Tiffany vs Angela comparison panel -->
     <div class="chart-block reveal">
@@ -1700,8 +1718,9 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
         </div>
       </div>
 
-      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">Note: Budget shares from BLS Consumer Expenditure Survey historical data · DOL NDCP 2022 (childcare) · All values approximate for illustrative purposes</p>
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:0.75rem;">Source: BLS Consumer Expenditure Survey historical data · DOL NDCP 2022 · All values are being approximated for illustrative purposes for the narration</p>
     </div>
+
 
   </div>
 </section>
@@ -1714,9 +1733,9 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
   <div class="container">
 
     <div class="section-header section-header--centered reveal" style="padding-top:6rem;">
-      <span class="eyebrow eyebrow--muted">Section 05 · Interactive</span>
+      <span class="eyebrow eyebrow--muted">Section 05 · Interactive Calculator</span>
       <h2 id="s5-heading">Where do you land?</h2>
-      <p style="margin:0 auto;">Tiffany and Angela are illustrations. Your situation is specific. Select your income group, region, housing status, and family size — and see what your household budget would have looked like in 1960 versus today.</p>
+      <p style="margin:0 auto;">Your situation is specific. Select your income group, region, housing status, and desired family size. See what your household budget would have looked like in 1960 versus today! Don't be alarmed!</p>
     </div>
 
     <div class="calculator-embed reveal" style="margin-bottom:6rem;">
@@ -1735,7 +1754,7 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
     <div class="section-header reveal" id="s6-header">
       <span class="eyebrow eyebrow--muted">Section 06</span>
       <h2 id="s6-heading"></h2>
-      <p>Fertility decline has many causes — cultural, medical, social. But the economic environment shapes when and whether people form families. The data shows a consistent relationship between rising housing costs and falling birth rates.</p>
+      <p>Fertility decline has many causes like cultural, medical, social. But the economic environment also shapes when and whether people want to form families. The data shows a consistent relationship between rising housing costs and falling birth rates.</p>
     </div>
 
 <script>
@@ -1796,8 +1815,6 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
 
     <!-- Chart: Housing-Fertility Nexus -->
     <div class="chart-block reveal">
-      <div class="chart-title">The Housing-Fertility Nexus</div>
-      <div class="chart-subtitle">Total Fertility Rate (left axis) vs. Shelter CPI index 1967=100 (right axis)</div>
       <p>The shaded areas in the following plot represent periods of housing surges </p>
   <ul style="margin-top: 0.75rem; padding-left: 1.5rem; line-height: 1.9; color: var(--text-muted);">
     <li><strong>1973–1980 · Oil Shock Housing Surge:</strong> The OPEC oil embargo triggered broad inflation across the economy. This was the first period where housing costs began pulling away from wages and the first time fertility dropped below replacement level.</li>
@@ -1806,6 +1823,8 @@ Then growth slowed. Between 1973 and 2023, a full 50 years, real median family i
     <li><strong>2020–2024 · COVID Surge:</strong> The fastest home price appreciation in recent history. Remote work drove demand for larger homes and non urban properties. Supply chains collapsed which made new construction expensive and slow. The Federal Reserve's emergency interest rate cuts kept mortgage rates near historic lows in 2020–2021, fueling a buying frenzy. When rates rose sharply in 2022–2023, prices didn't fall — they froze. Existing homeowners refused to sell and give up their low locked-in rates, creating a supply freeze. Shelter costs hit their highest index level ever recorded: 1,393 in 2024 (1967=100).</li>
   </ul>
       <div class="chart-frame">
+        <div class="chart-title">The Housing-Fertility Nexus</div>
+        <div class="chart-subtitle">Total Fertility Rate (left axis) vs. Shelter CPI index 1967=100 (right axis)</div>
         <iframe src="outputs/act3/act3_fig3_fertility_housing.html" height="520" title="Housing fertility nexus chart"></iframe>
       </div>
       <p class="chart-source">Sources: World Bank/CDC via FRED (SPDYNTFRTINUSA) · BLS via FRED (CUSR0000SAH1)</p>
@@ -2139,6 +2158,13 @@ document.querySelectorAll('iframe').forEach(frame => {
 })();
 
 </script>
+
+  <div style="text-align: center; margin: 2rem 0 5rem 0; display: flex; justify-content: center; gap: 2rem;">
+    <a href="references.pdf" target="_blank"
+      style="color: var(--primary); font-size: 1.1rem; text-decoration: none; border-bottom: 1px solid var(--primary);">
+      References →
+    </a>
+  </div>
 
   <div style="text-align: center; margin: 2rem 0 5rem 0; display: flex; justify-content: center; gap: 2rem;">
     <a href="llm-usage-log.pdf" target="_blank"
